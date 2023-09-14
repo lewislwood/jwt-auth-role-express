@@ -8,12 +8,6 @@ const baseURL = "http://localhost:3000";
 let lastToken;
 
 
-
-
-
-
-
-
 const buildRequest     = (body)=> {
   let myBody = body, jsRequest, myHeaders = { "Content-Type": "application/json"};
   if (! body) myBody = {} ;
