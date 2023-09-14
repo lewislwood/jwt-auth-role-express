@@ -1,0 +1,29 @@
+{
+  "name": "jwt-auth-express",
+  "version": "1.0.0",
+  "description": "Super simple Auth Token demonstration",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node test/test",
+    "dev": "node dist/index",
+    "watch": "npx tsc --watch"
+  },
+  "keywords": ["auth", "token","jwt","express"],
+  "author": "Lewis Wood",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.3",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.5.7",
+    "typescript": "^5.2.2"
+  }
+}
