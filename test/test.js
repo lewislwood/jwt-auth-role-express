@@ -8,13 +8,8 @@ const baseURL = "http://localhost:3000";
 let lastToken;
 
 
-const getToken = (  token) => {
-  let tk = token, config;
-if (!tk) tk = lastToken;
-  if (tk) config ={ "x-access-token" : tk};
-  lastToken = tk;
-  return config;
- }; //getToken
+
+
 
 
 
