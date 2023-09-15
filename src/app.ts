@@ -53,13 +53,11 @@ app.post("/register", async (req:Request, res:Response) => {
         email },
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: "2h",
+        expiresIn: process.env.token_exp as string,
       }
     );    
     // save user token
     newUser.token = token;
-
-    // return new user
     res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
@@ -87,7 +85,7 @@ app.post("/login", async (req:Request, res:Response) => {
         { user_id: user._id, email },
         process.env.TOKEN_KEY as string,
         {
-          expiresIn: "2h",
+          expiresIn: process.env.token_exp as string,
         }
       );
 

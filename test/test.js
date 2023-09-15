@@ -52,8 +52,7 @@ async function testRegister( user, password) {
     const result = await runFetch(url, req);
     if (result.token) {
       logger.info("Registration token saved.");
-      const email = user.toLowerCase();
-      users[email] = result.token;
+      users[result.email] = result.token;
       lastToken = result.token;
     }  else {
       logger.info(result);
@@ -88,6 +87,15 @@ console.log(`testRoute${route} : `,error.message);
 return result;
   } ; // testRoute
 
+  function wait(ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+  logger.info(`Waiting for ${ms/1000} seconds.`);
+        resolve(ms)
+      }, ms )
+    })
+  }  ; // wait
+
 
 
 async function registerLoginTests() {
@@ -112,7 +120,7 @@ async function registerLoginTests() {
    result =await  testLogin("Paris", "spinach");
    logger.info("Login Paristh  with inValid credentials");
    result =await  testLogin("Paris", "broccoli");
-   logger.info("*** Finished Registration Tests & Login Tests *****");
+   logger.info("*** Finished Registration Tests & Login Tests *****\n");
 };  // registerLoginTests
 
 async function tokenAuthTests() {
@@ -145,15 +153,43 @@ async function tokenAuthTests() {
 
 
 
-  logger.info("*** Finished Token Auth Tests*****");
+  logger.info("*** Finished Token Auth Tests***** \n");
 }; // tokenAuthTests
+
+
+async function tokenExpiresTest() {
+  let result;
+
+  logger.info(" **** Starting Token Expire Test *****");
+  logger.info("Register Lewis then Login just in case already registered.");
+  result =await  testRegister("lewis", "letmein007");
+  result =await  testLogin("lewis", "letmein007");
+
+
+  logger.info("Testing authenticated route /welcome ");
+  result = await testRoute("/welcome", "lewis" );
+
+  logger.info("Note: token_exp value is set in the .env file for the server. ");
+  logger.info("Will now wait 30 seconds and test again..");
+  await wait(30 * 1000);
+
+  logger.info("Testing authenticated route /welcome ");
+  result = await testRoute("/welcome", "lewis" );
+  logger.info("*** Finished Token Expires Test  *****\n");
+} ; // tokenExpiresTest
+
 
 
 async function doTests() {
   let result;
-  // result = await registerLoginTests();
 
-result = tokenAuthTests();
+  // Simply comment out any test yyou do not want to test right now.
+  result = await registerLoginTests();
+
+// result = await tokenAuthTests();
+
+
+await tokenExpiresTest(); 
 
 }; // doTests
   
