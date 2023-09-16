@@ -3,7 +3,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {createUser, findUser , usersList}  from "./model/user";
-import {verifyToken  as auth} from "./middleware/auth";
+import {verifyToken  as auth} from "./middleware/role-auth";
 import { LwRequest } from "./mylib";
 
 
@@ -49,7 +49,7 @@ app.post("/register", async (req:Request, res:Response) => {
     // Create token
     const tk = process.env.TOKEN_KEY;
     const token = jwt.sign(
-      { user_id: newUser.id, 
+      { user_id: newUser._id, 
         email },
       process.env.TOKEN_KEY as string,
       {
@@ -104,12 +104,15 @@ app.get("/", (req:LwRequest, response:Response) => {
   response.status(200).send({"status": 200, "body": "Availailable Routs\n /welcome  \n /userslist"});
 });
 
-app.get("/welcome",auth,  (req:LwRequest, res:Response) => {
+//  Now authenticate and set role
+app.use( auth);
+
+app.get("/welcome",(req:LwRequest, res:Response) => {
   const user = (req?.user)? req.user.email : "";
   res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Welcome ${user} 🙌 `});
 }); 
 
-app.get("/userslist",auth,   (req:LwRequest, res:Response) => {
+app.get("/userslist",(req:LwRequest, res:Response) => {
 const ul = usersList();
 res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Users List is ${ul}.`});
 });

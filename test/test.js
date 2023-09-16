@@ -184,9 +184,9 @@ async function doTests() {
   let result;
 
   // Simply comment out any test yyou do not want to test right now.
-  result = await registerLoginTests();
+  // result = await registerLoginTests();
 
-// result = await tokenAuthTests();
+  result = await tokenAuthTests();
 
 
 await tokenExpiresTest(); 

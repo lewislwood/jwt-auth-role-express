@@ -4,17 +4,20 @@
 export type User = {
   email: string,
   password: string,
-  id?: number,
+  _id?: number,
   token?: string
 };
 
 
-const users:{[key:string]:any} = {};
+const users:{[key:string]:User} = {};
+const guestUser: User= {_id:0-1, email: "guest", password: ""};
 let lastID = 0;
+
+export const getGuestUser = (): User => { return guestUser};
 
 
 export const createUser = (newUser: User) => {
-  const nUser:User = { id:++lastID , ... newUser , "token": ""};
+  const nUser:User = { _id:++lastID , ... newUser , "token": ""};
   const key = nUser.email.toLowerCase();
   users[key] = nUser;
   return nUser;
