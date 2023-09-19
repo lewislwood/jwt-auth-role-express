@@ -87,6 +87,39 @@ console.log(`testRoute${route} : `,error.message);
 return result;
   } ; // testRoute
 
+  async function testRoutePost(route, text, user) {
+    const url = baseURL +route ;
+    let  tk,  result, theBody = {"text": text} ; 
+    let config= { 
+      method: "POST", 
+      headers: { "Content-Type": "application/json"}, 
+      mode: "same-origin",
+      body : JSON.stringify(theBody )     
+    };
+      if (user) {
+    tk = users[user.toLowerCase()];
+    if (! tk)  lastToken = null; // invalid user so no token on purpose ... clear lastToken as well
+      } else tk = lastToken;
+  if (tk) config.headers["x-access-token"] = `${tk}`; 
+  
+  try {
+  result = await   fetch( url, config);
+  if (result.ok) {
+  result =await  result.json();
+  if ((result.status) < 299) logger.info( result.body)
+  else logger.info(result.text);
+  } else {
+    console.log( result.statusText);
+    logger.info(result.statusText);
+  }
+  } catch(error) {
+  console.log(`testRoute${route} : `,error.message);
+  }; //catch
+  
+    
+  return result;
+    } ; // testRoutePost
+
   function wait(ms) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
