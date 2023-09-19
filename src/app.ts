@@ -3,7 +3,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {createUser, findUser , usersList}  from "./model/user";
-import {verifyToken  as auth} from "./middleware/role-auth";
+import {ownerOrRole, hasRole, verifyToken  as auth, isAuthorized} from "./middleware/role-auth";
 import { LwRequest } from "./mylib";
 
 
@@ -40,10 +40,7 @@ app.post("/register", async (req:Request, res:Response) => {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
-    const newUser = await createUser({
-      email: email,
-      password: encryptedPassword,
-    });
+    const newUser = await createUser(email,encryptedPassword   );
     
 
     // Create token
@@ -82,7 +79,7 @@ app.post("/login", async (req:Request, res:Response) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
       const token = jwt.sign(
-        { user_id: user._id, email },
+        { user_id: user._id,roles: user.roles, email },
         process.env.TOKEN_KEY as string,
         {
           expiresIn: process.env.token_exp as string,
@@ -107,14 +104,19 @@ app.get("/", (req:LwRequest, response:Response) => {
 //  Now authenticate and set role
 app.use( auth);
 
-app.get("/welcome",(req:LwRequest, res:Response) => {
+app.get("/welcome", hasRole(["registered"]),(req:LwRequest, res:Response) => {
   const user = (req?.user)? req.user.email : "";
   res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Welcome ${user} 🙌 `});
 }); 
 
-app.get("/userslist",(req:LwRequest, res:Response) => {
+app.get("/userslist", hasRole(["guest"]),(req:LwRequest, res:Response) => {
 const ul = usersList();
 res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Users List is ${ul}.`});
+});
+
+app.route("/blog/*")
+.get(ownerOrRole(['registered', "editor"]),  (req:LwRequest, res:Response) => {
+  return res.status(201).json({"status": 201,"body": `You are now viewing ${req.blogInfo?.owner} blog.`});
 });
 
 

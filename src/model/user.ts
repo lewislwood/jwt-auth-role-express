@@ -1,7 +1,12 @@
 
 
 
+export type RolesItem= "admin" | "guest" | "registered" | "lunch lady" | "editor"; 
+// This is for Runtime type checking
+export const rolesList: RolesItem[] = ["admin" , "guest" , "registered" , "lunch lady" , "editor"]; 
+
 export type User = {
+  roles: RolesItem[],
   email: string,
   password: string,
   _id?: number,
@@ -10,14 +15,16 @@ export type User = {
 
 
 const users:{[key:string]:User} = {};
-const guestUser: User= {_id:0-1, email: "guest", password: ""};
+const guestUser: User= {_id:0-1, email: "guest", password: "", "roles": ["guest"]};
 let lastID = 0;
 
 export const getGuestUser = (): User => { return guestUser};
 
 
-export const createUser = (newUser: User) => {
-  const nUser:User = { _id:++lastID , ... newUser , "token": ""};
+export const createUser = (  email: string, password: string) => {
+  // first user is always admin
+  const nRoles: RolesItem[] = (lastID )? ['registered'] : ['admin'];
+  const nUser:User = { _id:++lastID , email, password, "roles": nRoles, "token": ""};
   const key = nUser.email.toLowerCase();
   users[key] = nUser;
   return nUser;
@@ -33,7 +40,7 @@ if (! users[em]) return;
 
 
 export const usersList = () => {
-const ul = Object.keys(users);
-return ul.join(", ");
+const ul = Object.values(users).map((u) =>{return `${u.email} role(s) ${u.roles.join(", ")}`})
+return ul.join("; ");
 };
 

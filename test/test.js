@@ -177,6 +177,44 @@ async function tokenExpiresTest() {
   result = await testRoute("/welcome", "lewis" );
   logger.info("*** Finished Token Expires Test  *****\n");
 } ; // tokenExpiresTest
+const testRoles = async () => {
+  let result;
+  logger.info("*** Start roles routes  *****");
+  logger.info("Registering 3 users Lewis, Paris, Peggy")
+  result =await  testRegister("lewis", "letmein007");
+  result =await  testRegister("Paris", "spinach");
+  result =await  testRegister("Peggy", "cabbageSoup");
+  logger.info("Now logging each user Lewis, Paris, Peggy. Since server may have already registered them so no token returned via register");
+  result = await testLogin("lewis", "letmein007");
+  result = await testLogin("Paris", "spinach");
+  result = await testLogin("peggy", "cabbageSoup");
+
+  logger.info("Listing Roles with user lewis as admin");
+  result = await testRoute("/userslist", "lewis");
+  logger.info("Testing /welcome route with user lewis as admin");
+  result = await testRoute("/welcome", "lewis");
+  logger.info("Testing /welcome route with user Paris as registered user");
+  result = await testRoute("/welcome", "paris");
+  logger.info("Testing /welcome route with user Guest as Guest ");
+  result = await testRoute("/welcome", "guest");
+  logger.info("Listing Roles with user Paris as registered user");
+  result = await testRoute("/userslist", "paris");
+  logger.info("Listing Roles with user guest user");
+  result = await testRoute("/userslist", "guest");
+
+  logger.info("Viewing Blog for Lewis by Lewis");
+  result = await testRoute("/blog/lewis", "lewis");
+  logger.info("Viewing Blog for fake by Lewis");
+  result = await testRoute("/blog/fake", "lewis");
+  logger.info("Viewing Blog for paris by fake");
+  result = await testRoute("/blog/paris", "fake");
+  logger.info("Viewing Blog for paris by peggy");
+  result = await testRoute("/blog/paris", "peggy");
+
+  logger.info("*** Finished Roles tests*****\n");
+} ; // testRoles
+
+
 
 
 
@@ -186,10 +224,12 @@ async function doTests() {
   // Simply comment out any test yyou do not want to test right now.
   // result = await registerLoginTests();
 
-  result = await tokenAuthTests();
+  // result = await tokenAuthTests();
 
 
-await tokenExpiresTest(); 
+// await tokenExpiresTest(); 
+
+await testRoles ();
 
 }; // doTests
   
