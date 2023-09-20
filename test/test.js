@@ -118,7 +118,7 @@ return result;
   
     
   return result;
-    } ; // testRoutePost
+  } ; // testRoutePost
 
   function wait(ms) {
     return new Promise((resolve, reject) => {
@@ -235,6 +235,9 @@ const testRoles = async () => {
   logger.info("Listing Roles with user guest user");
   result = await testRoute("/userslist", "guest");
 
+
+  logger.info("Peggy posting to Paris's blog");
+  result = await testRoutePost("/blog/paris","Wow Paris I can post here by Peggy a registered user.", "peggy");
   logger.info("Viewing Blog for Lewis by Lewis");
   result = await testRoute("/blog/lewis", "lewis");
   logger.info("Viewing Blog for fake by Lewis");

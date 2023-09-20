@@ -117,8 +117,14 @@ res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Users List i
 app.route("/blog/*")
 .get(ownerOrRole(['registered', "editor"]),  (req:LwRequest, res:Response) => {
   return res.status(201).json({"status": 201,"body": `You are now viewing ${req.blogInfo?.owner} blog.`});
+})
+.post( ownerOrRole(["editor"]), (req:LwRequest, res:Response) => {
+const text = req.body.text;
+return res.status(201).json({
+  status: 201,
+  body: `Blog entry successfully posted:()   ${text}).`
 });
-
+});
 
 
 // This should be the last route else any after it won't work

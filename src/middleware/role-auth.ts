@@ -60,7 +60,7 @@ return (req:LwRequest, res:Response, next:NextFunction) => {
       const ps = req.url.slice(1).split("/");
       if (ps.length === 0) return res.status(301).json({"status": 301, "text": "Bad URL Must supply valid user.","body":"Bad URL Must supply valid user."});
       const email = ps[1].toLowerCase();
-    const user = findUser(email);
+    const user =  findUser(email);
     if (! user) return res.status(223).json({"status":223,"text": "No such user blog found!", "body": "No such user blog found!"});
 
       req.blogInfo = { isOwner: (req.user.email === user.email), owner: user.email}
@@ -76,8 +76,11 @@ return (req:LwRequest, res:Response, next:NextFunction) => {
         if (validRoles.includes(r)) return next();
       });
       // Do not have a valid Role
-      const msg = `Access denied. You must have role${(validRoles.length > 1) ? "(s)": ""}${validRoles.join(", ")}.`
-      return res.status(403).json(msg);
+      const msg = `Access denied. You must have role ${(validRoles.length > 1) ? "(s)": ""}${validRoles.join(", ")}.`
+      return res.status(223).json({
+        status: 403,
+        text: msg
+      });
     };
       }; //ownerOrRole
       
