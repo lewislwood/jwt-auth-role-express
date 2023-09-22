@@ -1,3 +1,4 @@
+const { type } = require('os');
 
 
 const logger = require('./logger')();
@@ -87,9 +88,11 @@ console.log(`testRoute${route} : `,error.message);
 return result;
   } ; // testRoute
 
-  async function testRoutePost(route, text, user) {
+  async function testRoutePost(route, postBody, user) {
     const url = baseURL +route ;
-    let  tk,  result, theBody = {"text": text} ; 
+    let  tk,  result, theBody;
+    if ((typeof  postBody )  === "string") theBody = {"text": text}  
+    else theBody = postBody;
     let config= { 
       method: "POST", 
       headers: { "Content-Type": "application/json"}, 
@@ -250,9 +253,36 @@ const testRoles = async () => {
   logger.info("*** Finished Roles tests*****\n");
 } ; // testRoles
 
+const testSetRoles = async () => {
+  logger.info("Registering 5 users Lewis, Paris, Pegg, jessica, joey")
+  await  testRegister("lewis", "letmein007");
+  await  testRegister("Paris", "spinach");
+  await  testRegister("Peggy", "cabbageSoup");
+  await  testRegister("joe", "fishing");  
+  await  testRegister("jessica", "pineapples");
+
+await testLogin("lewis", "letmein007");
+  await testLogin("Paris", "spinach");
+await testLogin("peggy", "cabbageSoup");
+await  testLogin("joe", "fishing");  
+  await  testLogin("jessica", "pineapples");
+
+  logger.info("Users Registered and login tokens issued for each. Now begin setRoles Tests");
+
+  logger.info("Displaying Userlist with roles for everyone by Lewis (admin) first registered");
+  // await testRoute("/userslist", "lewis");
+
+logger.info ("Displaying roles for jessica");
+  await testRoute("/role/jessica", "lewis")
+  logger.info ("Changing roles for peggy");
+  await testRoutePost("/role/peggy", {roles: ["editor"]}, "lewis")
+
+
+  logger.info("***** Finished testSetRoles  ********")
 
 
 
+}; // testSetRoles
 
 async function doTests() {
   let result;
@@ -265,7 +295,9 @@ async function doTests() {
 
 // await tokenExpiresTest(); 
 
-await testRoles ();
+// await testRoles ()
+
+await testSetRoles();
 
 }; // doTests
   

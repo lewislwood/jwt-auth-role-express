@@ -3,7 +3,7 @@
 
 export type RolesItem= "admin" | "guest" | "registered" | "lunch lady" | "editor"; 
 // This is for Runtime type checking
-export const rolesList: RolesItem[] = ["admin" , "guest" , "registered" , "lunch lady" , "editor"]; 
+export const rolesList: string[] = ["admin" , "guest" , "registered" , "lunch lady" , "editor"]; 
 
 export type User = {
   roles: RolesItem[],
@@ -44,3 +44,15 @@ const ul = Object.values(users).map((u) =>{return `${u.email} role(s) ${u.roles.
 return ul.join("; ");
 };
 
+export const setRoles = (email: string, newRoles: RolesItem[])=> {
+const vRoles: RolesItem[] = [];
+newRoles.forEach((r) =>{
+  const rL: string = r.toLowerCase();
+  if (rolesList.includes(rL)) vRoles.push(rL as RolesItem);
+  });
+  if (! vRoles.includes("registered")) vRoles.push('registered');
+  const user= findUser(email);
+  if (user)
+user.roles = vRoles;
+return user;
+ }; // setRoles 

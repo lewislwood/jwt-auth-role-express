@@ -1,14 +1,14 @@
 import { Request} from "express";
 import type User from "./model/user";
-type BlogInfo = {
+type RouteInfo= {
     isOwner?: boolean;
-    owner?: string;
+    owner?: User;
 }
 
 
 interface LwRequest extends Request{
     user?: User;
     isAuthorized?: boolean;
-    blogInfo?: BlogInfo;
+    routeInfo?: RouteInfo;
 
 }
