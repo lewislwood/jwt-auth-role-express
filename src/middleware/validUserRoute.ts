@@ -7,12 +7,16 @@ export const validUserRoute= (req:LwRequest, res:Response, next:NextFunction) =>
 // Only retrieve routeInfo once
 if (!req.routeInfo) {
     const ps = req.url.slice(1).split("/");
-    if (ps.length === 0) return res.status(301).json({"status": 301, "text": "Bad URL Must supply valid user.","body":"Bad URL Must supply valid user."});
-    const email = ps[0].toLowerCase();
-  const user =  findUser(email);
-  if (! user) return res.status(223).json({"status":223,"text": "No such user blog found!", "body": "No such user blog found!"});
+    if (ps.length === 0) return res.status(400).json({"status": 400, "text": "Bad URL Must supply valid user.","body":"Bad URL Must supply valid user."});
+    const email = ps[0].trim().toLowerCase();
+  const oUser=  findUser(email);
+  if (! oUser) return res.status(400).json({"status": 400,"text": "No such user route found!", "body": "No such user blog found!"});
   
-    req.routeInfo= { isOwner: (req.user.email === user.email), owner: user}
+  const user = req.user as User;
+  const  uEmail = user.email,  oEmail = oUser.email;
+  const isEmail = (uEmail === oEmail);
+
+    req.routeInfo= { isOwner: isEmail, owner: oUser}
     }; // if ! req.routeInfo
     return next();  
   

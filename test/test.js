@@ -1,4 +1,8 @@
 const { type } = require('os');
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 
 const logger = require('./logger')();
@@ -91,7 +95,7 @@ return result;
   async function testRoutePost(route, postBody, user) {
     const url = baseURL +route ;
     let  tk,  result, theBody;
-    if ((typeof  postBody )  === "string") theBody = {"text": text}  
+    if ((typeof  postBody )  === "string") theBody = {"text": postBody}  
     else theBody = postBody;
     let config= { 
       method: "POST", 
@@ -239,8 +243,10 @@ const testRoles = async () => {
   result = await testRoute("/userslist", "guest");
 
 
+logger.info("*** begining blog route test  ***");
+
   logger.info("Peggy posting to Paris's blog");
-  result = await testRoutePost("/blog/paris","Wow Paris I can post here by Peggy a registered user.", "peggy");
+  await testRoutePost("/blog/paris","Wow Paris I can post here by Peggy a registered user.", "peggy");
   logger.info("Viewing Blog for Lewis by Lewis");
   result = await testRoute("/blog/lewis", "lewis");
   logger.info("Viewing Blog for fake by Lewis");
@@ -249,6 +255,15 @@ const testRoles = async () => {
   result = await testRoute("/blog/paris", "fake");
   logger.info("Viewing Blog for paris by peggy");
   result = await testRoute("/blog/paris", "peggy");
+
+  logger.info("Granting Paris editor role by Lewis (admin)")
+  await testRoutePost("/role/paris", {"roles": ['editor']},"lewis");
+  logger.info("Paris is now attempting to post to peggy as editor, but she needs to relogin to get role update");
+  await testRoutePost("/blog/peggy", "Hi Peggy from Paris.", "paris");
+  await testLogin("Paris", "spinach");
+  logger.info("Paris is now posting  to peggy as editor");
+  await testRoutePost("/blog/peggy", "Hi Peggy from Paris.", "paris");
+
 
   logger.info("*** Finished Roles tests*****\n");
 } ; // testRoles
@@ -270,12 +285,32 @@ await  testLogin("joe", "fishing");
   logger.info("Users Registered and login tokens issued for each. Now begin setRoles Tests");
 
   logger.info("Displaying Userlist with roles for everyone by Lewis (admin) first registered");
-  // await testRoute("/userslist", "lewis");
+  await testRoute("/userslist", "lewis");
 
 logger.info ("Displaying roles for jessica");
   await testRoute("/role/jessica", "lewis")
-  logger.info ("Changing roles for peggy");
-  await testRoutePost("/role/peggy", {roles: ["editor"]}, "lewis")
+  logger.info ("Lewis changing roles for peggy (Roles: 'admin' test");
+  await testRoutePost("/role/peggy", {roles: ["lunch_lady"]}, "lewis")
+  logger.info ("Lewis Displaying roles for peggy (Roles: 'admin' test");
+  await testRoute("/role/peggy", "lewis")
+  await testLogin("peggy", "cabbageSoup");
+
+  logger.info ("PeggyDisplaying roles for peggy (Roles: 'lunch lady' test");
+  await testRoute("/role/peggy", "peggy")
+  logger.info ("Peggy is changing roles for paris (Role: 'lunch lady' test");
+  await testRoutePost("/role/paris", {roles: ["editor"]}, "peggy")
+  logger.info ("Paris is changing roles for Jessica(Role: 'editor' test");
+  await testRoutePost("/role/jessica", {roles: ["editor"]}, "paris")
+  logger.info ("Peggyis changing roles for Peggy(Role: 'lunch lady' Trying to grant admin to herself");
+  await testRoutePost("/role/peggy", {roles: ["admin", "lunch lady"]}, "peggy")
+  logger.info ("Peggy is changing roles for joe(Role: 'lunch lady' Trying to grant alunch ladyto herself");
+  await testRoutePost("/role/joe", {roles: ["admin", "lunch_lady"]}, "peggy")
+await  testLogin("joe", "fishing");  
+logger.info("Joe displaying his own roles")
+await testRoute("/role/joe", "joe")
+logger.info("Joe is displaying roles for all");
+await testRoute("/userslist", "joe");
+  
 
 
   logger.info("***** Finished testSetRoles  ********")
@@ -295,9 +330,9 @@ async function doTests() {
 
 // await tokenExpiresTest(); 
 
-// await testRoles ()
+await testRoles ()
 
-await testSetRoles();
+// await testSetRoles();
 
 }; // doTests
   

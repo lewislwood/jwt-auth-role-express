@@ -53,8 +53,8 @@ app.post("/register", async (req:Request, res:Response) => {
     // Create token
     const tk = process.env.TOKEN_KEY;
     const token = jwt.sign(
-      { user_id: newUser._id, 
-        email },
+      { _id: newUser._id, 
+        email: newUser.email },
       process.env.TOKEN_KEY as string,
       {
         expiresIn: process.env.token_exp as string,
@@ -86,7 +86,7 @@ app.post("/login", async (req:Request, res:Response) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
       const token = jwt.sign(
-        { user_id: user._id,roles: user.roles, email },
+        { _id: user._id,roles: user.roles, email: user.email },
         process.env.TOKEN_KEY as string,
         {
           expiresIn: process.env.token_exp as string,
@@ -121,13 +121,15 @@ const ul = usersList();
 res.status(201).send( { "status": 201, "isAuthorized": true,"body":`Users List is ${ul}.`});
 });
 app.use("/blog", blogRouter);
-blogRouter.use( validUserRoute,  hasRoles(["registered","editor"], true)) //Only Owner
+blogRouter.use( validUserRoute,  hasRoles(["registered","editor"],"allow") )
 blogRouter.route("/*", )
 .get(  (req:LwRequest, res:Response) => {
-  return res.status(201).json({"status": 201,"body": `You are now viewing ${req.routeInfo?.owner} blog.`});
+  const owner = req?.routeInfo?.owner;
+  const email = (! owner) ?  "???": owner.email; 
+  return res.status(201).json({"status": 201,"body": `You are now viewing ${email} blog.`});
 })
-.post( hasRoles(["editor"], true), (req:LwRequest, res:Response) => {
-const text = req.body.text;
+.post( hasRoles(["editor"], "allow"), (req:LwRequest, res:Response) => {
+const text = req.body?.text || "maybe body";
 return res.status(201).json({
   status: 201,
   body: `Blog entry successfully posted:()   ${text}).`
@@ -135,18 +137,19 @@ return res.status(201).json({
 });
 
 app.use("/role", roleRouter)
-roleRouter.use( validUserRoute,  hasRoles(["lunch lady"], false) ); 
+roleRouter.use( validUserRoute) 
 roleRouter.route("/*")
-.get((req:LwRequest, res:Response) => {
+.get( hasRoles(["lunch_lady"])  , (req:LwRequest, res:Response) => {
   const owner =  req.routeInfo?.owner;
   return res. status(201).json({"status": 201,
   "body": `${owner.email} has the following ${(owner.roles.length > 1)? "roles are": "role is"} ${owner.roles.join(", ")} .`
 });
 })
-.post((req:LwRequest, res:Response) => {
+// Block owner from changing themselves
+.post( hasRoles(["lunch_lady"],"block" ),(req:LwRequest, res:Response) => {
   const owner =  req.routeInfo?.owner, newRoles = req.body.roles;
   const user = setRoles( owner.email, newRoles);
-  if (! user) return res.status(401).json({
+  if (! user) return res.status(400).json({
     "status": 401,
     "text": "invalid user"
   });

@@ -1,9 +1,9 @@
 
 
 
-export type RolesItem= "admin" | "guest" | "registered" | "lunch lady" | "editor"; 
+export type RolesItem= "admin" | "guest" | "registered" | "lunch_lady" | "editor"; 
 // This is for Runtime type checking
-export const rolesList: string[] = ["admin" , "guest" , "registered" , "lunch lady" , "editor"]; 
+export const rolesList: string[] = ["admin" , "guest" , "registered" , "lunch_lady" , "editor"]; 
 
 export type User = {
   roles: RolesItem[],
