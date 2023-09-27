@@ -1,8 +1,4 @@
 const { type } = require('os');
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 
 const logger = require('./logger')();
@@ -325,14 +321,14 @@ async function doTests() {
   // Simply comment out any test yyou do not want to test right now.
   // result = await registerLoginTests();
 
-  // result = await tokenAuthTests();
+  result = await tokenAuthTests();
 
 
-// await tokenExpiresTest(); 
+await tokenExpiresTest(); 
 
 await testRoles ()
 
-// await testSetRoles();
+await testSetRoles();
 
 }; // doTests
   

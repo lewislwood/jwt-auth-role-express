@@ -62,6 +62,26 @@ Auth.ts is where the verifyToken code is stored and does it's magic.  If the tok
 
 Test.js has 3 primary test functions. RegisterLogin,tokenAuth, & TokenExpire. Feel free to comment any test y9ou do not want to perform.  Review the output in the tess.log file. This demonstrates the number of tests that are needed to write a good api. This is usually performed by api clients like Postman and others. They use defined collections of tests/requests.
 
+--------
+
+### Role Authorization Branch
+
+Role branch crates support for authorization. The web token payload includes the roles as well, this way the app does not have to keep looking them up.  Now the user does not get the new roles until they login again. An advanced Hexercise would be to create an authentication token server and buffering invalid tokens so that you can check quickly for this condition and automatically inform the client he/she must re-login. High security settings would appreciate this feature.
+
+Guest are still not authenticated, but are issue a role of guest. There may be a reason you may want unregistered users to access certain content. The app curently supports the following roles ["registered", "editor", "lunch_lady", "admin"] .
+The admin role is automatically assigned to the first user that registers and registered to all others. You can use the path "/role/<user>" to assign roles (Only "lunch_lady" & "admin" can do this).
+You cannot assign "guest" role to anyone, it is a virtual role.
+
+I have two paths that  support blogs & role. You append a user email to the end of the path. Now I call it email, but none of my tests enter valid emails, they are just first names (this is testing after all).
+I call this user after the blog or role as owner.  After all lewis owns the blog "/blog/lewis".  So you will find that I add a routeInfo to the reques object and determine who is the owner of the route.
+
+This branch also introduces route specific sub authenticatification. The "/blog" & the "/role" routes implemet their own routers. This way I can suthenticate and not interfer with other routes with my authrization middleware. I use hasRoles([roles...], owner access ( allow || ignore || block)) this middle ware determines what roles have access and if the owner has access or if it does not matter.  Default owner is ignore (who cares otherwise).
+
+Note: * Token payload contains roles in string format. This is for training purposes. Production you should use codes (numbers) and map them appropiately. Also use enumerators. Makes request smaller and code smaller in size.
+
+Note: ** I left a http error to show up in the console/terminal. The next branch I will not only clean up the app.ts file and move the controller logic/code to a controllers folder.  I will add custom error handling logic that express implements.
+
+
 -------
 
 ## Generating a Random Token Key
