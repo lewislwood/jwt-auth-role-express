@@ -5,24 +5,17 @@ import {hasRoles} from "./middleware/roles";
 import {setRoles ,createUser, findUser , rolesList, usersList}  from "./model/user";
 
 import {validUserRoute} from "./middleware/validUserRoute";
+import {getController, postController} from "./controllers/blog";
 
-const route= express.Router();
+
+export const route= express.Router();
+
+// validUser Route must have a valid registered user to view
+// Only registered users can access the blogs
 route.use( validUserRoute,  hasRoles(["registered","editor"],"allow") )
 route.route("/*", )
-.get(  (req:LwRequest, res:Response) => {
-  const owner = req?.routeInfo?.owner;
-  const email = (! owner) ?  "???": owner.email; 
-  return res.status(201).json({"status": 201,"body": `You are now viewing ${email} blog.`});
-})
-.post( hasRoles(["editor"], "allow"), (req:LwRequest, res:Response) => {
-const text = req.body?.text || "maybe body";
-return res.status(201).json({
-  status: 201,
-  body: `Blog entry successfully posted:()   ${text}).`
-});
-});
+.get(getController)
+// Owner and editor can edit a post
+.post( hasRoles(["editor"], "allow"), postController);  
 
 
-
-
-module.exports = route;

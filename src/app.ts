@@ -5,6 +5,7 @@ import { LwRequest } from "./mylib";
 // middleware
 import {verifyToken  as auth } from "./middleware/role-auth";
 import {hasRoles} from "./middleware/roles";
+import {route as blogRoute} from "./blog-route";
 
 // Controllers
 import {registerController , loginController } from "./controllers/register-login";
@@ -33,8 +34,8 @@ app.get("/welcome", hasRoles(["registered"]),welcomeController );
 
 app.get("/userslist", hasRoles(["guest"]),usersListController );
 
-app.use("/blog", require("./blog-route"));
-app.use("/role", require("./blog-route"));
+app.use("/blog", blogRoute);
+app.use("/role", require("./role-route"));
 
 // This should be the last route else any after it won't work
 app.use("*",invalidController );
