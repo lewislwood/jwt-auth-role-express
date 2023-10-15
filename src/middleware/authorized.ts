@@ -1,10 +1,11 @@
 import {  response, NextFunction, Response } from "express";
 import {  LwRequest } from "../mylib";
+import { AppError } from "../middleware/error-handlers";
 
 export const isAuthorized= (req:LwRequest, res:Response, next:NextFunction) => {
 
     if (! req.isAuthorized) {
-        return res.status(403).json("Not Authorized.");
+          return next(new AppError(403, "Not Authorized")); 
     }
         return next();
     }; //isAuthorized

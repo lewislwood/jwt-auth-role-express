@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 
 import dotenv from "dotenv";
 import {  LwRequest } from "../mylib";
-import {User, findUser, getGuestUser, RolesItem} from "../model/user";;
+import {User, findUser, getGuestUser, RolesItem} from "../model/user";
+import { AppError } from "./error-handlers";
+;
 
 dotenv.config();
 
@@ -22,7 +24,7 @@ export const verifyToken = (req:LwRequest, res:Response, next:NextFunction) => {
     const decoded = jwt.verify(token, config.TOKEN_KEY as string);
     req.user = decoded;
   } catch (err) {
-    return res.status(401).send({"status": 401,"text":"Invalid Token"});
+    return next( new AppError(401, "Invalid token"));
   }; //catch
 } else {
     // Login as Guest

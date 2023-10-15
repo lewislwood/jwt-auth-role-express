@@ -75,7 +75,7 @@ result = await   fetch( url, config);
 if (result.ok) {
 result =await  result.json();
 if ((result.status) < 299) logger.info( result.body)
-else logger.info(result.text);
+else logger.info(result.message);
 } else {
   console.log( result.statusText);
   logger.info(result.statusText);
@@ -199,6 +199,7 @@ async function tokenExpiresTest() {
   logger.info(" **** Starting Token Expire Test *****");
   logger.info("Register Lewis then Login just in case already registered.");
   result =await  testRegister("lewis", "letmein007");
+  logger.info("Login Lewis to get token, just in cae already registered earlier")
   result =await  testLogin("lewis", "letmein007");
 
 

@@ -1,6 +1,7 @@
 import { Request, response, NextFunction, Response } from "express";
 import { LwRequest } from "../mylib";
 import express from "express";
+import { AppError } from "../middleware/error-handlers";
 import {setRoles ,rolesList}  from "../model/user";
 
 
@@ -11,13 +12,10 @@ export const getController = (req:LwRequest, res:Response) => {
   });
 };
 
-export const postController = (req:LwRequest, res:Response) => {
+export const postController = (req:LwRequest, res:Response, next:NextFunction) => {
     const owner =  req.routeInfo?.owner, newRoles = req.body.roles;
     const user = setRoles( owner.email, newRoles);
-    if (! user) return res.status(400).json({
-      "status": 401,
-      "text": "invalid user"
-    });
+    if (! user) return next( new AppError(401, "Invalid User"));
     return res. status(201).json({"status": 201,
     "body": `${user.email} has changed to ${(newRoles.length > 1)? "roles are": "role is"} ${user.roles.join(", ")} .`
   });

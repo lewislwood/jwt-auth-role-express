@@ -4,7 +4,7 @@ import { LwRequest } from "../mylib";
 
 export const invalidController = (req:Request, res:Response) => {
     res.status(404).json({
-      success: "false",
+      "status": 404,
       message: "Page not found",
       error: {
         statusCode: 404,

@@ -1,11 +1,15 @@
 import { Request, response, NextFunction, Response } from "express";
+import { LwRequest } from "../mylib";
+import { AppError } from "../middleware/error-handlers";
+
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {setRoles ,createUser, findUser , rolesList, usersList}  from "../model/user";
-import { LwRequest } from "../mylib";
+import { nextTick } from "process";
 
 
-export const registerController = async (req:Request, res:Response) => {
+export const registerController = async (req:Request, res:Response, next: NextFunction) => {
   try {
     // Get user input
     const  email = req.body.email as string , password = req.body.password as string;
@@ -13,9 +17,7 @@ export const registerController = async (req:Request, res:Response) => {
     // Validate user input
     if ((!email)||(! password )) {
     const msg = "All input is ___  fields: " + JSON.stringify(req.body);
-    res.status(200).send("User Page");
-      res.status(401);
-      // .json(msg);
+      return next(new AppError(401, msg));
     }
 
     // check if user already exist
@@ -23,8 +25,7 @@ export const registerController = async (req:Request, res:Response) => {
     const oldUser = await findUser( email );
 
     if (oldUser) {
-      return res.status(409).json("User Already Exist. Please Login");
-      console.log("User alread exists.");
+      return next(new AppError (409, "User Already Exist. Please Login"));
     }
 
     //Encrypt user password
@@ -46,15 +47,14 @@ export const registerController = async (req:Request, res:Response) => {
     );    
     // save user token
     newUser.token = token;
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (err) {
-    console.log(err);
-    res.status(501).json("Server error");
+return next(err);
   }
 };
 
 
-export const loginController =async (req:Request, res:Response) => {
+export const loginController =async (req:Request, res:Response, next: NextFunction) => {
     try {
       // Get user input
       const email = req.body?.email as string, password = req.body?.password as string;   
@@ -62,7 +62,7 @@ export const loginController =async (req:Request, res:Response) => {
       // Validate user input
       if ((!email) ||(!password)) {
         const msg = "All input is ___  fields: " + JSON.stringify(req.body);
-        res.status(400).json(msg);
+        return next( new AppError(400, msg ))
       }
       // Validate if user exist in our database
       const user = await findUser( email );
@@ -83,8 +83,7 @@ export const loginController =async (req:Request, res:Response) => {
         // user
         return res.status(200).json(user);
       }
-      return res.status(400).json("Invalid Credentials");
+      return next( new  AppError(400, "Invalid Credentials"));
     } catch (err) {
-      console.log("/login error: ", err);
-    }
+return next(err);    }
   };
