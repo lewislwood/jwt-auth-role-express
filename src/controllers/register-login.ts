@@ -17,7 +17,7 @@ export const registerController = async (req:Request, res:Response, next: NextFu
     // Validate user input
     if ((!email)||(! password )) {
     const msg = "All input is ___  fields: " + JSON.stringify(req.body);
-      return next(new AppError(401, msg));
+      return next(new AppError(400, msg));
     }
 
     // check if user already exist
@@ -25,7 +25,7 @@ export const registerController = async (req:Request, res:Response, next: NextFu
     const oldUser = await findUser( email );
 
     if (oldUser) {
-      return next(new AppError (409, "User Already Exist. Please Login"));
+      return next(new AppError (400, "User Already Exist. Please Login"));
     }
 
     //Encrypt user password

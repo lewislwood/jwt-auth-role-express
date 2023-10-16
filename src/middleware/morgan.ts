@@ -1,5 +1,5 @@
 import morgan  from "morgan";
-const logger  = require("../model/logger");
+import {logger}  from "../model/logger";
 
 const stream = {
   // Use the http severity

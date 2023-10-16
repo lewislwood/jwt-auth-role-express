@@ -24,7 +24,8 @@ import {myTestController} from "./controllers/mytest";
 //  const morganMiddleware  = require("./middleware/morgan");
 //  app.use(morganMiddleware);
 
-//  app.use(express.urlencoded({ extended: false }));
+ app.use(express.urlencoded({ extended: false }));
+
 
 app.use(express.json({ limit: "50mb" }));
 

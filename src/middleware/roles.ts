@@ -22,7 +22,7 @@ if (ri.isOwner) {
   if (ownerAccess === "allow") return next();
   // Must be block
   // console.log("Owner Blocked.");
-  return next(new AppError(401, "Owners are denied access to self"));
+  return next(new AppError(403, "Owners are denied access to self"));
 };
 }; // routeInfo
 }; // if ownerAccess != ignore
@@ -30,16 +30,17 @@ if (ri.isOwner) {
     
       // Admin has all roles automatically
       if (uRoles.includes("admin")) return next();
+      let isValid = false;
       validRoles.forEach((r)  => {
-        if (uRoles.includes(r)) return next();
+        if (uRoles.includes(r)) isValid = true;
       });
+      if (isValid) return next();
       // Do not have a valid Role
       const msg = `Access denied. You must have role${(validRoles.length > 1) ? "(s)": ""} ${validRoles.join(", ")}.`;
       return next(new AppError(401, msg));
   } catch(error: any) {
-    if (error.code != "ERR_HTTP_HEADERS_SENT"){
-console.log("hasRoles error: %s", error.message);
-  };
+    return next(error);
   }; //catch
+  return next();  // should not get here.
 }; // return (req,res,next) =>
       }; //hasRole

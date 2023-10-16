@@ -320,7 +320,9 @@ async function doTests() {
   let result;
 
   // Simply comment out any test yyou do not want to test right now.
-  // result = await registerLoginTests();
+  await testRoute("/mytest", "lewis");
+
+  result = await registerLoginTests();
 
   result = await tokenAuthTests();
 
@@ -334,3 +336,4 @@ await testSetRoles();
 }; // doTests
   
 doTests();
+

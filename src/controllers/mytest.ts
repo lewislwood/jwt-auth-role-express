@@ -1,7 +1,7 @@
 import { Request, response, NextFunction, Response } from "express";
 import { LwRequest } from "../mylib";
 import { AppError } from "../middleware/error-handlers";
-const logger  = require("../model/logger");
+import {logger}   from "../model/logger";
 
 class TestError extends AppError{
     constructor( message: string) {
@@ -23,8 +23,8 @@ export const myTestController = (req:LwRequest,res:Response, next: NextFunction)
 
 // logger.error("I am testing error" );
     const mval = 42;
-// @  ts-ignore  Tell Typescript to ignore obvious error so I can test error handling
-    // mval .crazyError();
+// @ts-ignore  Tell Typescript to ignore obvious error so I can test error handling
+    mval .crazyError();
     return next(new TestError("Lewis has an error"));
 
 res.send("I am going crazy");

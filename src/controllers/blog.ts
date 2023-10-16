@@ -8,7 +8,7 @@ import {setRoles ,createUser, findUser , rolesList, usersList}  from "../model/u
 export const getController = (req:LwRequest, res:Response) => {
     const owner = req?.routeInfo?.owner;
     const email = (! owner) ?  "???": owner.email; 
-    return res.status(201).json({"status": 201,"body": `You are now viewing ${email} blog.`});
+    return res.status(200).json({"status": 201,"body": `You are now viewing ${email} blog.`});
   };
 
 

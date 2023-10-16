@@ -23,23 +23,47 @@ export class AppError extends Error{
 }
 
 
-export const errorLogger = (error: AppError, request: LwRequest, response: Response, next: NextFunction) => {
-  const status = (error.statusCode) || 500;
+export const errorLogger = (error: Error, request: LwRequest, response: Response, next: NextFunction) => {
+  const logMode = (error.name === "AppError") ? "info" : "error";
+  //@ts-ignore
+  const status = (logMode === "info") ? error.statusCode : 500;
   let msg = `${error.name}:${status} ${error.message}`;
-  const logMode = (error.name === "error") ? "error" : "info";
-    logger.log(logMode , msg);
+
+    if (logMode === "info") {
+      logger.info( msg); 
+
+    }else {
+  logger.error( msg);
+    }
+    next(error); // calling next middleware
+
     
-    next(error) // calling next middleware
-}
+}; // errorLogger
   
 export const errorResponder = (error: AppError, request: LwRequest, response: Response, next: NextFunction) => {
+  try {
   response.header("Content-Type", 'application/json')
     
   const status = error.statusCode || 500
-  const message = `LW: ${status} ${error.name}: ${error.message}`
-  response.status(status).json({
+  let message = (status < 500)   ? `LW: ${status} ${error.name}: ${error.message}` : `Server error:   ${error.message}`;
+    response.status(status).json({
     status, 
     message
   })
-}
+} catch(err:any) {
+  logger.error("Error in error: "+ error.message)
+}; // catch
+}; // errorResponder 
 
+
+
+/*
+List of http Error codes I am interested in
+
+
+400  Bad Request
+401 UnAuthorized
+403  forbidden
+404 Not Found 
+"ERR_HTTP_HEADERS_SENT"
+*/

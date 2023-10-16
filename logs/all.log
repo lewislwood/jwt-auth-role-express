@@ -1,0 +1,24 @@
+44:08:448 [31merror[39m: [31mTypeError:500 mval.crazyError is not a function[39m
+44:08:448 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:09:449 [32minfo[39m: [32mAppError:400 Invalid Credentials[39m
+44:09:449 [32minfo[39m: [32mAppError:400 Invalid Credentials[39m
+44:09:449 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:09:449 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:09:449 [32minfo[39m: [32mAppError:401 Access denied. You must have role registered.[39m
+44:09:449 [32minfo[39m: [32mAppError:401 Access denied. You must have role registered.[39m
+44:09:449 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Invalid token[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Access denied. You must have role registered.[39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Access denied. You must have role guest.[39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Access denied. You must have role editor.[39m
+44:39:4439 [32minfo[39m: [32mAppError:404 No such user route found![39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Access denied. You must have role(s) registered, editor.[39m
+44:39:4439 [32minfo[39m: [32mAppError:401 Access denied. You must have role editor.[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:39:4439 [32minfo[39m: [32mAppError:400 User Already Exist. Please Login[39m
+44:40:4440 [32minfo[39m: [32mAppError:401 Access denied. You must have role lunch_lady.[39m
+44:40:4440 [32minfo[39m: [32mAppError:403 Owners are denied access to self[39m

@@ -1,6 +1,7 @@
 import {  response, NextFunction, Response } from "express";
 import {  LwRequest } from "../mylib";
-import {User, findUser, getGuestUser, RolesItem} from "../model/user";import { AppError } from "./error-handlers";
+import {User, findUser, getGuestUser, RolesItem} from "../model/user";
+import { AppError } from "./error-handlers";
 ;
 
 
@@ -11,7 +12,7 @@ if (!req.routeInfo) {
     if (ps.length === 0) return res.status(400).json({"status": 400, "text": "Bad URL Must supply valid user.","body":"Bad URL Must supply valid user."});
     const email = ps[0].trim().toLowerCase();
   const oUser=  findUser(email);
-  if (! oUser) return next( new AppError(400, "No such user route found!"));
+  if (! oUser) return next( new AppError(404, "No such user route found!"));
   
   const user = req.user as User;
   const  uEmail = user.email,  oEmail = oUser.email;
