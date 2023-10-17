@@ -1,7 +1,15 @@
 import { response, NextFunction, Response } from "express";
 import { LwRequest } from "../mylib";
+import {logger} from "../config/logger";
+import dotenv from "dotenv";
 
-import {logger} from "../model/logger";
+
+let config:any ;
+// ignore logging these items
+const ignoreNames: {[key:string]: boolean } = {};
+const includeCodes : {[key:string]: boolean } = {};
+
+
 
 const requestLogger = (request: Request, response: Response, next: NextFunction) => {
     console.log(`${request.method} url:: ${request.url}`);
@@ -23,18 +31,24 @@ export class AppError extends Error{
 }
 
 
-export const errorLogger = (error: Error, request: LwRequest, response: Response, next: NextFunction) => {
-  const logMode = (error.name === "AppError") ? "info" : "error";
-  //@ts-ignore
-  const status = (logMode === "info") ? error.statusCode : 500;
+export const errorLogger = (error: Error| AppError, request: LwRequest, response: Response, next: NextFunction) => {
+  const name = error.name.toLowerCase(); 
+  let igNore = false;
+  if (ignoreNames[name]) igNore = true;
+  let logMode = (name === "error") ? "error" : "debug";
+  // @ts-ignore
+  let status = (logMode === "debug") ? error?.statusCode : 500;
+  if (! status) {status = 500;logMode = "error";}
+  if ((igNore) && (includeCodes[`${status}`]))  igNore = false;
+  if (! igNore ) {
+
   let msg = `${error.name}:${status} ${error.message}`;
 
-    if (logMode === "info") {
-      logger.info( msg); 
-
-    }else {
-  logger.error( msg);
-    }
+  logger.log({
+    level: logMode,
+    message: msg
+  });
+  }; // if ignore
     next(error); // calling next middleware
 
     
@@ -66,4 +80,27 @@ List of http Error codes I am interested in
 403  forbidden
 404 Not Found 
 "ERR_HTTP_HEADERS_SENT"
+log_exc_error_names
 */
+
+{
+  dotenv.config();
+  config = process.env;
+  const names = config.log_exc_error_names;
+
+  if ( names ) {
+const nList = names?.toLowerCase().trim().split(",") || [];
+nList?.forEach((v: string) =>{ ignoreNames[v] = true;});
+  }
+  ;
+  //includeCodes 
+  //log_inc_error_codes
+  const codes= config.log_inc_error_codes;
+
+  if ( codes) {
+const nList = codes?.trim().split(",") || [];
+nList?.forEach((v: string) =>{ includeCodes [v] = true;});
+  }
+  ;
+  
+}

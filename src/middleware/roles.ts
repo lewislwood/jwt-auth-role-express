@@ -2,11 +2,21 @@ import {  response, NextFunction, Response } from "express";
 import {  LwRequest } from "../mylib";
 import { AppError } from "../middleware/error-handlers";
 
-import {RolesItem} from "../model/user";import { logger } from "../model/logger";
+import {RolesItem} from "../model/user";import { logger } from "../config/logger";
 ;
 
 
 type OwnerAccess = "ignore" | "allow" | "block";
+class RoleError extends AppError{
+  constructor( status: number,  message: string) {
+      super(status, message );
+      // Object.setPrototypeOf(this, new.target.prototype);
+      this.name = "RoleError";
+      this.statusCode = status;
+};
+};
+
+
 
 export const hasRoles =(validRoles: RolesItem[],ownerAccess: OwnerAccess = "ignore")  => {
     return (req:LwRequest, res:Response, next:NextFunction) => {
@@ -22,7 +32,7 @@ if (ri.isOwner) {
   if (ownerAccess === "allow") return next();
   // Must be block
   // console.log("Owner Blocked.");
-  return next(new AppError(403, "Owners are denied access to self"));
+  return next(new RoleError(403, "Owners are denied access to self"));
 };
 }; // routeInfo
 }; // if ownerAccess != ignore
@@ -37,7 +47,7 @@ if (ri.isOwner) {
       if (isValid) return next();
       // Do not have a valid Role
       const msg = `Access denied. You must have role${(validRoles.length > 1) ? "(s)": ""} ${validRoles.join(", ")}.`;
-      return next(new AppError(401, msg));
+      return next(new RoleError(401, msg));
   } catch(error: any) {
     return next(error);
   }; //catch

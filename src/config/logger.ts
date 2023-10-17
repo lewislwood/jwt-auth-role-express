@@ -1,4 +1,6 @@
 const winston = require('winston');
+require("dotenv").config();
+
 // Define your severity levels.
 // With them, You can create log files,
 // see or hide levels based on the running ENV.
@@ -15,8 +17,8 @@ const levels = {
 // if the server was run in development mode; otherwise,
 // if it was run in production, show only warn and error messages.
 const level = () => {
-  const env = process.env.NODE_ENV || 'development'
-  const isDevelopment = env === 'development'
+  const env = process.env.NODE_ENV || 'development';
+  const isDevelopment = (env === 'development');
   return isDevelopment ? 'debug' : 'warn'
 }
 
@@ -36,15 +38,15 @@ const colors = {
 winston.addColors(colors)
 
 // Chose the aspect of your log customizing the log format.
-const format = winston.format.combine(
+const format = winston.format.simple(
   // Add the message timestamp with the preferred format
   // winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-  winston.format.timestamp({ format: 'mm:ss:ms' }),
+  winston.format.timestamp({ format: 'mm:ss' }),
   // Tell Winston that the logs must be colored
   winston.format.colorize({ all: true }),
   // Define the format of the message showing the timestamp, the level and the message
   winston.format.printf(
-    (info: any) => `${info.timestamp} ${info.level}: ${info.message}`,
+    (info: any) => ` ${info.message} ${info.timestamp} ${info.level}: `,
   ),
 )
 
@@ -60,7 +62,10 @@ const transports = [
   }),
   // Allow to print all the error message inside the all.log file
   // (also the error log that are also printed inside the error.log(
-  new winston.transports.File({ filename: 'logs/all.log' }),
+  new winston.transports.File({ filename: 'logs/all.log',
+  level: level()
+
+}),
 ]
 
 // Create the logger instance that has to be exported
@@ -72,4 +77,6 @@ export const logger = winston.createLogger({
   transports,
 })
 
-// module.exports = logger
+{
+  
+}

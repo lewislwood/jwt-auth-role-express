@@ -1,7 +1,7 @@
 import { Request, response, NextFunction, Response } from "express";
 import { LwRequest } from "../mylib";
 import { AppError } from "../middleware/error-handlers";
-import {logger}   from "../model/logger";
+import {logger}   from "../config/logger";
 
 class TestError extends AppError{
     constructor( message: string) {

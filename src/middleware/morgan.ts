@@ -1,9 +1,9 @@
 import morgan  from "morgan";
-import {logger}  from "../model/logger";
+import {logger}  from "../config/logger";
 
 const stream = {
   // Use the http severity
-  write: (message: any) => logger.log("http", message),
+  write: (message: any) => logger.http( message),
 };
 
 const skip = () => {
