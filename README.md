@@ -84,6 +84,27 @@ Note: ** I left a http error to show up in the console/terminal. The next branch
 
 -------
 
+### MVC (Model View Controller) Branch
+
+This is the final branch of the API demo. The MVC branch places all routes under api with controllers broken out and under the controllers folder.  An auth folder has been created under the API folder. This is where all authentification related items are placed. This is common practice and centrallizes the auth code so that swapping out internal token provider, o-auth providers, web site authentication, your own auth server.  All controllers are async for optimal performance. Logging, tracing, request logging have all been implemented.
+
+Authentification token seperated out, because it is the standard seems to be. Also this allows the maximum versatillity. You simply add your code and other providers to the auth folder under API and your off.
+
+Async fully implemented. Why is this important? Javascript is naturally a blocking script. While it is waiting for something no-one else gets a turn on this Javascript machine. Async allows it to say "Hey I will wait and someone else can have a turn at this CPU." Nodejs handles this life cycle for javascript for you. Without async and just 1 CPU you are quite limited to perhaps only 1,xxx simultaneous connections.  That is assuming you have good code and without a lot of CPUU hording code. Async allows a single CPU to support as many as 10,000 simultaneous connections (optimal). This was the ceiling for the longest time til worker threads came around and load balancers. So a 16 CPU machine can support about million+ connections simultaneously.  So async is important if you plan on developing something like a game or conferencing platform.
+
+Logging using Winston and Morgan to log request/response.  Logger.ts is located under config/logger.ts. The default logging level is debug, but in production environments it goes down to warning level and errors only. Utilizes the standard enviroment variable NODE_ENV that you will find in the .env file . I use screen reader and decided to use simple format and placed the time at the end of line. Production I would do otherwise, of course. Morgan has a flag in the .env file that turns on request logging or not. You can also move it around and custom routes. Great for if you are trying to track performance.
+
+The error logging feature works like a champ and is quite versatile. The logging handling and logging is handled by the middleware/errorHandllers.ts.ErrorLog will decide how to log the error or debug. Two filters are available here, besides node_dev under logger.ts. There the it is done unkown to this errorLog middleware. 
+
+Environment filter by error names is done in the .env file. I have created a few Error classes. You can filter them out and focus on particular types. Also I have an include force status codes. Say you want all forbidden Roles, yt RoleError is being filtered. This will give it to you. Imagination you can use route logging in addition and modify this errorLog to detect that the error has already been logged so ignore, simply by adding a flag to the new error classes.
+
+ErrorRsponse. Handles sending back a response back to the client so they know what is going on and what happened. It is typically the last item .
+
+This API is almost ready to snap into a web API infrastructure. Only requires a few minor alterations to make it a world class ready web public API.  Your Roles need to be numbers. SSL certificates from a domain encrypted ssl certificate. CORS rules and much more. This is an API so a refresh token system is not as neccessary, nor are cookies. Those become important if you bring in anFront end in addition. 
+Check out below for the additional resources.  Happy coding..
+
+-------
+
 ## Generating a Random Token Key
 
 I provide two ways to generate a random token key
