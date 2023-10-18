@@ -4,11 +4,12 @@ This project is the begginnings of an API Authentification Token based system.
 
 This API provides no sanitization of input, vo input validation of any sorts.  For example: I am inputting a user name for email for my testing purposes.  It does everything in memory, so restart server and tests will start over. (No users/tokens issued/registered).
 
- Only requirement is NodeJs. There are 3 scripts to launch various options.
+ Only requirement is NodeJs. There are 4 scripts to launch various options.
 
 + npm run watch   // Will run compiler for Typescript changes
 + npm run dev  // runs the api server on port 3000
 + npm run test  // runs the javascript file runs a bunch of tests and generate a tests.log file
++ npm run token // Generates a token for you to place in the .env if you choose
 
 Each runs in a different terminal.
 
@@ -34,8 +35,9 @@ I like to run the Typescript watch in one terminal. Nothing I hate more than won
  1. Clone Repository "git clone [https://github.com/lewislwood/jwt-auth-role-express]"
  2. In the folder type "git fetch --all" // This will download all branches.
  3. Type "npm install"  // Installs depencies (dotenv,bcryptjs,express,typescript,winston
- 4. rename .env-sample to .env  // you really should generate your own unique token key *see below*) I know I am not using this key, but others may
- 5. Now checkout the branch you want to play with. "git checkout auth" // The first branch
+ 4. rename .env-sample to .env  
+ 5. type: npm run token  // generates a token to .token file. copy it to the .env file
+ 6. Now checkout the branch you want to play with. "git checkout auth" // The first branch
 
 Braches are [main, auth, role, final]  
 
@@ -102,31 +104,3 @@ ErrorRsponse. Handles sending back a response back to the client so they know wh
 
 This API is almost ready to snap into a web API infrastructure. Only requires a few minor alterations to make it a world class ready web public API.  Your Roles need to be numbers. SSL certificates from a domain encrypted ssl certificate. CORS rules and much more. This is an API so a refresh token system is not as neccessary, nor are cookies. Those become important if you bring in anFront end in addition. 
 Check out below for the additional resources.  Happy coding..
-
--------
-
-## Generating a Random Token Key
-
-I provide two ways to generate a random token key
-
-### Generate via OpenSSL
-
-  This requires OpenSSL installed, which is the case for most Linux installations.
-
- ~~~~~ $ openssl rand -base64 32
-
-Copy the output as your token key.
-
-### Token via Node
-
-This one requires Nodejs, which the project requires as well. Simply go to your terminal and enter the nodejs interactive session by entering:
-
-~~~~~ node
-
-Now in the node_ prompmpt enter:
-
-~~~~ require("crypto").randomBytes(64).toString("hex") //token outputed
-
- This will output a 64 byte hex code token.
-
- ---------

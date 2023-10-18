@@ -320,6 +320,7 @@ async function doTests() {
   let result;
 
   // Simply comment out any test yyou do not want to test right now.
+  logger.info("Running the /mytest route for some crazy error.");
   await testRoute("/mytest", "lewis");
 
   result = await registerLoginTests();

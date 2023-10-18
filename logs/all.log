@@ -1,0 +1,24 @@
+error: TypeError:500 mval.crazyError is not a function
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 Invalid Credentials
+debug: AppError:400 Invalid Credentials
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 User Already Exist. Please Login
+debug: RoleError:401 Access denied. You must have role registered.
+debug: RoleError:401 Access denied. You must have role registered.
+debug: AppError:400 User Already Exist. Please Login
+debug: AuthError:401 Invalid token
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 User Already Exist. Please Login
+debug: RoleError:401 Access denied. You must have role registered.
+debug: RoleError:401 Access denied. You must have role guest.
+debug: RoleError:401 Access denied. You must have role editor.
+debug: AppError:404 No such user route found!
+debug: RoleError:401 Access denied. You must have role(s) registered, editor.
+debug: RoleError:401 Access denied. You must have role editor.
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 User Already Exist. Please Login
+debug: AppError:400 User Already Exist. Please Login
+debug: RoleError:401 Access denied. You must have role lunch_lady.
+debug: RoleError:403 Owners are denied access to self
