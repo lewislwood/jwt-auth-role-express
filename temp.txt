@@ -1,1 +1,28 @@
-{"status":200,"body":"Available Routes: \n /  Home route displays available routes.  Unrestricted \n /mytest  Developer wildcard test.  Unrestricted \n /welcome  Displayes welcome message.  Registered user. \n /blog/username  Display the blog for a user.  Registered Users only.  \n /blog/username  Post a blog .  Must be Editor or Wner of the blog. \n /role/username  Displays Roles for that username.  Lunch LadyOnly, UserName cannot change their own role   \n /userslist  Displays list of users and their roles.  Guest Only.  Crazy right~ lol \n Admin has all priveleges. First user registered is automatically garanted admin role. PS.- Do not piss off the luch lady she will change your role ! lol"}
+
+Filter methods [get, post]  error code 405 Method not alowed
+
+
+
+Security:
+
+[6 best practices to secure nodejs](https://javascript.plainenglish.io/5-best-practices-to-secure-your-node-js-application-in-production-4b9ee8f0fcac)
+
+[Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html)
+
+[Http Error Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+[[CORS](https://www.npmjs.com/package/cors)
+
+[Cross side Origin  Resources Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
+
+
+
+
+Resources:
+
+
+
+
+
+

@@ -104,3 +104,26 @@ ErrorRsponse. Handles sending back a response back to the client so they know wh
 
 This API is almost ready to snap into a web API infrastructure. Only requires a few minor alterations to make it a world class ready web public API.  Your Roles need to be numbers. SSL certificates from a domain encrypted ssl certificate. CORS rules and much more. This is an API so a refresh token system is not as neccessary, nor are cookies. Those become important if you bring in anFront end in addition. 
 Check out below for the additional resources.  Happy coding..
+
+
+-------
+
+### Resources
+
+  *__Security Related__* resources will make your web site a much more reliable and up all the time. Also you will be confident your clients precious data is secure.
+
+[6 best practices to secure nodejs](https://javascript.plainenglish.io/5-best-practices-to-secure-your-node-js-application-in-production-4b9ee8f0fcac) is a  great read and full of tips and what to look out for.
+
+[Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html). Nothing like a quick reference and lots of links to so many more sources.
+
+[[CORS](https://www.npmjs.com/package/cors) defines it and tells you why you will need it. 
+
+[Cross side Origin  Resources Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
+   *__ General __*
+
+   [Http Error Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) You will need this reference in order to return standard codes.
+
+   [Dave Grey's Express playlist](https://www.youtube.com/playlist?list=PL0Zuz27SZ-6P4vnjQ_PJ5iRYsqJkQhtUu) is one of many I used in my learning for this  project. He discusseshow to use refresh tokens as part of your authentification. Really good practice in front end apps especially.  Can be in an API makes it arder for packet network sniffers to steal your token and do harm. The idea is short time token, like 15 minutes and refresh token of a longer time.  Thus your clientside or their app could just resend the refresh token instead of asking client to relogin. Example 1 day.
+
+   [WebDev Simplified](https://www.youtube.com/playlist?list=PLZlA0Gpn_vH8jbFkBjOuFjhxANC63OmXM) I use as a resource and he explains nicely.
