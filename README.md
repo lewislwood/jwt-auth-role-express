@@ -122,6 +122,8 @@ Check out below for the additional resources.  Happy coding..
 
    *__ General __*
 
+[Express reference  best practices](https://expressjs.com/en/advanced/best-practice-performance.html) is chalked with a whole lot of information. Who better to get the info than the Express documentation.
+
    [Http Error Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) You will need this reference in order to return standard codes.
 
    [Dave Grey's Express playlist](https://www.youtube.com/playlist?list=PL0Zuz27SZ-6P4vnjQ_PJ5iRYsqJkQhtUu) is one of many I used in my learning for this  project. He discusseshow to use refresh tokens as part of your authentification. Really good practice in front end apps especially.  Can be in an API makes it arder for packet network sniffers to steal your token and do harm. The idea is short time token, like 15 minutes and refresh token of a longer time.  Thus your clientside or their app could just resend the refresh token instead of asking client to relogin. Example 1 day.
