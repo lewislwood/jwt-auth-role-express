@@ -1,6 +1,28 @@
 "use strict";
 
 
+
+class TalkingConsole {
+    container;
+    talkCtrl;
+    clearButton;
+    hideClass = "hidden";
+    constructor(containerDivOrID ="talk-container", talkCtrlOrID = "talk-control", clearButtonOrID = "talk-clear", hideClassName = "hidden") {
+if (typeof containerDivOrID  === "string") this.container = document.getElementById(containerDivOrID )
+else this.container = containerDivOrID ;
+if (typeof talkCtrlOrID  === "string") this.talkCtrl = document.getElementById(talkCtrlOrID )
+else this.talkCtrl = talkCtrlOrID ;
+if (typeof clearButtonOrID  === "string") this.clearButton = document.getElementById(clearButtonOrID )
+else this.clearButton = clearButtonOrID ;
+this.hideClass = hideClassName 
+
+
+this.clearButton.onclick = () => { this.talkCtrl.innerHTML = "";};
+
+
+    }; //constructor
+}
+
 const clearSayIt = document.getElementById("clear-console");
 const sayIt = document.getElementById("say_it");
 const sayAlert = (msg) => {
