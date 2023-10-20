@@ -1,0 +1,20 @@
+
+:root {
+    --dark-bg: #000080;
+    --dark-color: yellow;
+
+    --light-bg: lightgray;
+    --light-color:#000080;
+
+    --theme-bg: var(--light-bg);
+    --theme-color: var(--light-color);
+    @media (prefers-color-scheme: dark) {
+    --theme-bg: var(--dark-bg);
+    --theme-color: var(--dark-color);
+    }
+}
+    
+    body {
+    background: var(--theme-bg);
+    color: var(--theme-color);
+}
