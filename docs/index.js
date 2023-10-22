@@ -9,9 +9,9 @@ class TalkingConsole{
     clearButton;
     hideClass = "hidden";
     keyEnums= {altKey: 2, ctrlKey:4, metaKey: 8, shiftKey: 16 }
-    keyToggler= { key: "s",  altKey:true, ctrlKey: false, shiftKey: false, metaKey: false};
-    keyClear= {key: "c",  altKey:true, ctrlKey: false, shiftKey: false, metaKey: false};
-    keyTesters= { toggler: 0, clear: 0};
+    keyToggler= { name: "toggler", key: "D",  altKey:false, ctrlKey: true, shiftKey: true, metaKey: false, test: 0, action: null};
+    keyClear= {name: "clear",key: "c",  altKey:true, ctrlKey: false, shiftKey: false, metaKey: false, test: 0, action: null};
+    keyTesters= [];
     constructor(containerDivOrID ="talk-container", talkCtrlOrID = "talk-control", clearButtonOrID = "talk-clear", hideClassName = "hidden") {
 if (typeof containerDivOrID  === "string") this.container = document.getElementById(containerDivOrID )
 else this.container = containerDivOrID ;
@@ -70,31 +70,36 @@ return i;
 this.sayIt(`TC.getTest error:  ${error.message}`);
 }; // catch
             }; // getKeyTest
-        setKeyTesters() {
-
-const en = this.keyEnums;
-
-const           kt = { clear: -1, toggler: -1};
-
-if ( this.keyClear.key)kt.clear = this.getKeyTest(this.keyClear);
-if ( this.keyToggler.key) kt.toggler= this.getKeyTest(this.keyToggler);
-this.keyTesters = kt;
-        }; // setKeyTesters
-// KeyHandle will use bitwise logic 
+        addKeyTest( kt) {
+kt.test   = -1;
+if ( kt.key) {
+    kt.test  = this.getKeyTest(kt);
+    kt.key  =   (kt.shiftKey)? kt.key.toUpperCase() : kt.key.toLowerCase();
+};
+const index = this.keyTesters.findIndex((k) => {return ( k.name===kt.name);});
+if (index > -1) this.keyTesters[index] = kt
+else  {
+    this.keyTesters.push(kt); 
+};
+        }; // addKeyTest
 keyHandler( ev) {
 const eTest = this.getKeyTest(ev),  kt = this.keyTesters;
 let handled = false;
 try {
 
-if ((eTest === kt.toggler&& (ev.key === this.keyToggler.key))) { 
-    handled = true;
-    this.toggleConsole();
-} else if ((eTest === kt.clear) && (ev.key === this.keyClear.key)) {
-    handled = true;
-this.clear("Console cleared.");
-}; 
-if (handled) ev.preventDefault();
+for (let iKey = 0; iKey < kt.length; iKey++) {
+    const k = kt[iKey];
 
+    if (k.test > -1) {
+if ((k.test === eTest) && (k.key === ev.key)) {
+handled = true;
+this.sayIt(`Handling key ${k.name}`);
+k.action(ev);
+};
+    }; // if kt > -1
+}; // for
+
+if (handled) ev.preventDefault();
 } catch(error) {
 this.sayIt(`KH error: ${error.message}  kt is ${JSON.stringify(kt)}`);
 };
@@ -112,15 +117,27 @@ else this.enable( true);  // disable for all
 
    }; //catch
 }; // toggleConsole()
-enableKeyHandling(toggleKey = {altKey: false, ctrlKey:true, shiftKey: true, metaKey: false, key: "D"}, clearKey = {altKey: false, ctrlKey:true, shiftKey: true, metaKey: false, key: "c"}) {
+enableKeyHandling(toggleKey , clearKey ) {
     try {
-this.keyToggler = toggleKey ;
-this.clearKey = clearKey;
+        if (  toggleKey) this.keyToggler  = toggleKey
+        else toggleKey = this.keyToggler;
+        if ( clearKey) this.keyClear = clearKey
+else clearKey= this.keyClear;
+const validKey = (k) => {
+    if (! ("name" in k)) k["name"] = null;
+    if (! ("action" in k)) k["action"] = null;
+};
 
-this.setKeyTesters(); // Convert to a binary number for keyHandler
+validKey(toggleKey);validKey(clearKey);
+if (! toggleKey.name) toggleKey.name = "toggler";
+if (! toggleKey.action) toggleKey.action = () => { this.toggleConsole()}; 
+if (! clearKey.name) clearKey.name = "clear";
+if (! clearKey.action) clearKey.action = () => {this.clear("consel was cleared")}; 
+this.addKeyTest(toggleKey);
+this.addKeyTest(clearKey);
 window.addEventListener( "keyup",(ev) => {this.keyHandler(ev);});
 } catch(error) {
-    this.logIt( `Talking Console Enable Key Handling error: ${error.message}`);
+    this.sayIt( `Talking Console Enable Key Handling error: ${error.message}`);
 
 }; //catch
 };  // enableKeyHandling
