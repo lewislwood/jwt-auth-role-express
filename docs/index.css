@@ -18,3 +18,11 @@
     background: var(--theme-bg);
     color: var(--theme-color);
 }
+
+.hidden {
+    position: absolute;
+    top: 0px;
+    left: 10000px;
+    width: 1px;
+    overflow:hidden; ;
+}
