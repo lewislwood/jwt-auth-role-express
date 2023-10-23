@@ -228,7 +228,7 @@ this.setThemeButtonCaption();
     setThemeButtonCaption()  {
         const nextTheme = this.names[ this.nextIndex()];
         const caption = `Switch to ${nextTheme} theme`
-        this.toggleCtrl.innerText= caption;
+        this.toggleCtrl.innerText= `${nextTheme}`;
        this.toggleCtrl .setAttribute("alt", caption )
         ;    }; // setThemeButtonCaption
 }; // ThemeManager

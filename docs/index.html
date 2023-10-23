@@ -9,16 +9,71 @@
 </head>
 
 <body>
-<button id="theme-toggler">Switch to Dark Theme</button>
+<button id="theme-toggler">Dark Theme</button>
+<div class="outer-container">
+<div class="container">
+    <header>
+        <div class="banner">
+            API WebToken Implementation and How to
+        </div>
+        <div class="sub-banner">
+            by Lewis L Wood
+        </div>
+    </header>
+<div class="main" role="main">
+<h1 id="main-heading">API Authentification & Authorization 3 part Tutorial</h1>
+<p>This tutorial is a 3 branch/step tutorial in developing a robust API. A firm understanding of an Express API will be demonstrated and become quite evident in this 3 p  part development proccess. How webtokens work and how security is implemented will be understood when you complete this proccess.  How to handle authorization/roles for users as part of authentificaton. Error handling how to set a robust and quite customizable error handling to help you find and diagnose the difficulat to locate errors. How to implement a sound logging system, for what ever you want to monitor (requests, types of user request errors, and server errors). Also a robust testing javascript file I developed to hit my server with requests (get & post). 
+</p>
+<h2>API Server Overview & Details</h2>
+<details id="api-details">
 
-<h1>Testing world</h1>
+    <summary>
+        
+        <p> 
+            This server saves all data in memory only, thus restart and start fresh. No input sanitizing.  Provides a test script "npm run test" and it will log results of the test in a tests.log 
+
+        </p>
+        
+    </summary>
+    
+    <p>
+        The first branch Auth was originally a javascript that I downloaded and  simplified  (I think from WebDev Simplified).  I then converted it to Typescript since that is my first choice for developing. I removed all database and any front end coding/cookies. All of this to give someone a really easy to read and follow route and controllers in on. Limiting too many concepts at once. 
+    </p>
+    <p>
+        <u><em>Scripts</em></u There are 4 npm scripts, although you will primarily use only 3 of them. The 4th token is used in setup  and never again. If you just want to run then 1)<b>npm run dev</b>, 2) <b>npm run test</b>, 3) <b>view results</b> by opening tests.log file.  
+    </p>
+    <p>
+        When you want to modify the API server code, I strongly recommend vs code. You will want to launch muliple terminalsThe 1st one wil run the script <b>npm run watch</b> this keeps Typescript recompiling whenever  a *.ts file is saved. You will have to restart the server. ( I reallize I could have implement ts-node and nodemon, but just more complexity for the average joe. I
+    </p>
+    <p>
+        I also provide 2 launch configuration scripts for vs code. One is for the dev server. Process  is watch, then f5 for debug, the run test script. I usually comment out tests and add new tests as I want for the moment. This way it is shorter run. I could have used Postman, thunderclient, but at the time of this creattion there were a few accessibility issues and I was forced to create my own. The test script maintains an in memory list of emails associated with a web token. I treated emails as userids, since I do no validation in this demo/tutorial.
+    </p>
+    <p>
+        I like to place server code in editor group 1 (ctrl 1). Test.js script in editor group 2 (ctrl+2), Test results tests.log file in editor group 3 (ctrl 3). I press ctrl ` for the terminal and run the test (npm run test).  Check results (ctrl+3). Review results highlight all results and edelete and save. then rerun. It is nice it automatically detects that the files have changed and loads the changes.  ** warning if you deleted and forgot to save it wil not work.
+    </p>
+</details>
+
+
+
+
+</div>
+<footer>
+    <div class="sub-banner">
+        Powered by Lewis L Wood
+    </div>
+</footer>
+</div>
+
+
 <div id="talk-container" class="hidden"aria-hidden ="false" >
+    <h5>Talking Console (ctrl+shift+D)</h5>
 
 <div id="talk-control" role="alert">
 
     <p>Please wait I am loading...</p>
 </div>    
-<button id="talk-clear">Clear Talking Console</button>
+<button id="talk-clear" alt="Clear Console (alt+c)" ">Clear Talking Console (alt+c)</button>
+</div>
 </div>
     
 </body>

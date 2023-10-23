@@ -17,6 +17,7 @@
     body {
     background: var(--theme-bg);
     color: var(--theme-color);
+
 }
 
 .hidden {
@@ -25,4 +26,37 @@
     left: 10000px;
     width: 1px;
     overflow:hidden; ;
+}
+.outer-container {
+    width: 100%;
+    display: grid;
+    place-items:center ;
+    
+}
+.container {
+    width: 1000px;
+    padding: 0;;
+    margin: 0;
+}
+
+header, footer {
+    width: 100%;
+    margin: 5px;
+    padding: 5ps;
+    display: grid;
+    place-content: center;
+}
+.banner {
+    font-weight: 700;
+    font-size: larger;
+}
+
+#theme-toggler {
+    font-weight: 300;
+    font-size:smaller   ;
+}
+font-weight:l  
+.sub-banner {
+    font-weight: 400;
+    font-size: large;
 }
