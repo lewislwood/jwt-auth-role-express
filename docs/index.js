@@ -148,8 +148,6 @@ window.addEventListener( "keyup",(ev) => {this.keyHandler(ev);});
         
 }; // talkingConsole
 
-
-
 class ThemeManager {
 
     toggleCtrl;

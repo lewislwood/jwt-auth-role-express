@@ -21,9 +21,13 @@
         </div>
     </header>
 <div class="main" role="main">
+    <div class="top-section">
 <h1 id="main-heading">API Authentification & Authorization 3 part Tutorial</h1>
 <p>This tutorial is a 3 branch/step tutorial in developing a robust API. A firm understanding of an Express API will be demonstrated and become quite evident in this 3 p  part development proccess. How webtokens work and how security is implemented will be understood when you complete this proccess.  How to handle authorization/roles for users as part of authentificaton. Error handling how to set a robust and quite customizable error handling to help you find and diagnose the difficulat to locate errors. How to implement a sound logging system, for what ever you want to monitor (requests, types of user request errors, and server errors). Also a robust testing javascript file I developed to hit my server with requests (get & post). 
 </p>
+</div>
+<div class="cards-container">
+<div name="API Details Section" class="card-details">
 <h2>API Server Overview & Details</h2>
 <details id="api-details">
 
@@ -49,12 +53,70 @@
         I also provide 2 launch configuration scripts for vs code. One is for the dev server. Process  is watch, then f5 for debug, the run test script. I usually comment out tests and add new tests as I want for the moment. This way it is shorter run. I could have used Postman, thunderclient, but at the time of this creattion there were a few accessibility issues and I was forced to create my own. The test script maintains an in memory list of emails associated with a web token. I treated emails as userids, since I do no validation in this demo/tutorial.
     </p>
     <p>
-        I like to place server code in editor group 1 (ctrl 1). Test.js script in editor group 2 (ctrl+2), Test results tests.log file in editor group 3 (ctrl 3). I press ctrl ` for the terminal and run the test (npm run test).  Check results (ctrl+3). Review results highlight all results and edelete and save. then rerun. It is nice it automatically detects that the files have changed and loads the changes.  ** warning if you deleted and forgot to save it wil not work.
+        I like to place server code in editor group 1 (ctrl 1). Test.js script in editor group 2 (ctrl+2), Test results tests.log file in editor group 3 (ctrl 3). I press ctrl ` for the terminal and run the test (npm run test).  Check results (ctrl+3). Review results highlight all results and edelete and save. then rerun. It is nice it automatically detects that the files have changed and loads the changes.  ** warning if you deleted and forgot to save it wil not refresh and be out of sync for the log file. You will then have to close log file w/o saving, and reopen it.
     </p>
 </details>
+</div>
+
+<div name="API Server Setup"  class="card-details">
+    <h2>Server download, setup, & install</h2>
+    <details>
+        <summary>
+            <p>
+                Clone the repository is the preferred method, but downwloading All branches as a zip file each is an option.
+                <U><em>Click here for more details</em></U>
+                </p>
+        </summary>
+        <b>Cloning</b>
+        <p>Copy the code below for cloning andplace in a folder where you want git to create the cloned folder.</p>
+        <code>git clone http://github.com/lewislwood/jwt-auth-role-express</code>
+        <p>
+        It may not automatically download all branches. You test by trying to switch to branch. 
+        <code>git checkout Auth</code>
+       If you get an error then you will have to fetch the other branches with the command below. 
+       <code>git fetch --all</code>
+       Now  you should not get any errors switching to the branch. Finally check status.
+       <code>git status</code>
+       This will always tell you what branch you are on. The main branch is  a good match for the final branch "mvc".
+    </p>
+    <b>Downloading zip files.</b>
+    You will want to rename each one appropiately immediately (github has a non-discriminating name for each zip file).
+    
+    <p>
+        This will require  you to click the 3 download links below. Unzip to a folder. Reccoment  and sub folder for each downloaded folder. 
+    </p>
+    <p>
+Zip File: 1) <a href="http://github.com/lewislwood/jwt-auth-role-express/zipball/auth">Auth branch</a>. 
+2)<a href="http://github.com/lewislwood/jwt-auth-role-express/zipball/role">Role branch</a>
+3) <a href="http://github.com/lewislwood/jwt-auth-role-express/zipball/mvc">MVC branch</a>
+
+    </p>
+<H3>You will need a web token to run in each branch</H3>
+<p>
+  So you will have to create one in each branch or copy it into each branch individually. Now I went ahead and allowed my web token I used in this demo to be uploaded to github. This is a no no, but if you are developing and testing locally it should not be an issue. Use my web token provided at your own risk, since anyone who downloads this API server will have it too. It is easy to create so I recommend that you do create one..
+</p>
+<code>npm run token</code>
+<p>
+    The above code will create a web token and store in a .token file.  Simply copy the entire token and replace the token I provide in the .env file.  That is it. Now repeat in every branch.
+</p>
+<p>
+    <u><em>***Note:  Git users</em></u> you can easily switch between branches with the following command: <code>git chickout role</code> Replace the branch name role I used with auth or mvc for those branches
+    You can verify where you are by : <code>git status</code>  . If you get a messesage that files have been modified and will be  lost.  Simply commit them or just do a  <code>git restore .</code> to abandon all changes, then you will be able to switch.
+</p>
+<h3>Installation of dependencies</h3>
+<p>
+You simply need to do <code>npm install</code>.  This command will install all you will need for that branch. You may have to do this for every branch as well. Since more packages were added after Auth branch & Role Branch. 
+</p>
+<p>
+    Congratulations you are now ready to start learning how to do authentification using web Tokens and Express Server. 
+</p>
+    </details>
+
+</div>
 
 
-
+<!-- End of Card Sections -->
+</div>
 
 </div>
 <footer>
