@@ -60,3 +60,19 @@ font-weight:l
     font-weight: 400;
     font-size: large;
 }
+
+
+#status-message {
+    padding-left: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 0;;;
+}
+
+.code-button {
+    padding: 3px;
+    margin: 3px;;
+    font-style: 0.8rem;
+}

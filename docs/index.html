@@ -10,6 +10,7 @@
 
 <body>
 <button id="theme-toggler">Dark Theme</button>
+<div id="status-message" role="alert" >...</div>
 <div class="outer-container">
 <div class="container">
     <header>
@@ -69,7 +70,7 @@
         </summary>
         <b>Cloning</b>
         <p>Copy the code below for cloning andplace in a folder where you want git to create the cloned folder.</p>
-        <code>git clone http://github.com/lewislwood/jwt-auth-role-express</code>
+        <code>git clone http://github.com/lewislwood/jwt-auth-role-express/</code>
         <p>
         It may not automatically download all branches. You test by trying to switch to branch. 
         <code>git checkout Auth</code>
@@ -114,6 +115,128 @@ You simply need to do <code>npm install</code>.  This command will install all y
 
 </div>
 
+<div name="Run demo & test script"  class="card-details">
+    <h2>Launch API server & Tests</h2>
+    <details>
+        <summary>
+            This section explaines how to run server & test, as well as development cycle. Click here to see the details.
+        </summary>
+        <p>
+        <b>Just run the server and hit it with API tests</b>
+        To tun the server without debugging simply type: <code>npm run dev</code>. The server wil be launched on port 3000 as the default. You can change the port in .env, but my Testscripts depend on this port. You can use Postman, ThunderClient, or curl or any other api tester.  I provided a test.js script file to run against this API server. I put this API through the wringer. 
+    </p>
+    <p>
+        To run my custom test.js file simply type: <code>npm run test</code>. This will run through a whole lot of tests. You can comment out test you do not want to do, or modify any of them as you desire. Te test results will be displayed in the terminal, but there are so many they will scroll off. So I also create a test.log file. Simply pull this file up and review the results. I declare the test and display the result from the API Server. Now in this test and API Server I abuse the email variable. Email is a good user identifier, because it is unique. However, it does not lend itself in blogs or role end points. Normally you create a username field for this purpose. Too complicated and I want this to be simple, so I just use  a user first name as email. 
+    </p>
+    <p>
+        The users I used are some family members and myself. The passwords I used are made up, except "letmein007" (a password I used in supporting clients back in 1996 through 2007 for remote connections. That connection software and VAR I worked for are non existent today) Besides today's standards it is a weak password. This API performs no snitizing or validation
+ That is covered in many other tutorials out there and this is only a demo project.    
+</p>
+<h3>Typical Development Cycle</h3>
+    <p>
+You wil will want to have Vs Code installed , if you do not already have it. You can download at <a href="https://code.visualstudio.com/download">Vs Code download page</a>.
+    </p>
+    <p>
+        Launch Vs Code and I typically do the following:
+        <ul>
+            <li>
+                Open file explorer with (ctrl+shift+e) and open src/app.ts file in editor 1
+            </li>
+            <li>
+               I then switch to editor group 2. Then open test/test.js. The API server are *.ts files written Typescript and the test is written Javascript. 
+            </li>
+            <li>
+                Now do (ctrl+`) to open or go to current terminal. Now enter <code>npm run watch</code>. This will watch your typescript files for any changes and recompile them. You will of course have to restart the server to get the changes.
+            </li>
+            <li>
+                Press (ctrl+shift+d) to go to debug section. Press left arrow and make sure the dev launch script is selected. This will launch the API server in development mode and you can place breakpoints and run code in the java console.  Now you can press (f5) to launch the debugger. Your API server is up and running.
+            </li>
+            <li>
+                Now open a new terminal (ctrl+shift+`).  Type in: <code>npm run test</code>. You will see a whole lot of test results go by or hear them. 
+            </li>
+            <li>
+                Now go to editor group 3 (ctrl 3) and open the file test.log in the root folder. These are the results of the test.js file you ran.
+            </li>
+            <li>
+                Edit or modify a test then run the test again, over and over. Remember results are in editor group 3, so delete all contents and save. rerun and get new results witout reloading the file.  Pretty handy.
+            </li>
+            <li>
+                Place a breakpoint in editor group 1, and feel free to open other files and see how it runs.
+            </li>
+            
+        </ul>
+    </p>
+
+        <p>
+            *** Note file locations were as they were in auth and role, mvc and main are under api folder.
+            ** note You can run <code>curl from the terminal as well.  curl http://localhot:3000/</code> or your browser. Although these are limited to on get method type requests and no token. 
+        </p>
+        Now you are ready to follow along as I explain each branch and how it leads to the next.
+
+    </details>
+
+</div>
+
+<div name="Authentification Branch"  class="card-details">
+<h2>Authentification Branch (auth for short</h2>
+
+<details>
+    <summaary>
+        <p>
+            <b>Auth Branch</b> Is the first branch in this lesson. Here you will learn how express middleware handles authentification. How tokens are generated and assigned. Click here for more details and begin.
+        </p>
+    </summaary>
+    <u><em>You will need Vs Code for best experience with this tutorial.</em></u>
+    <p>
+        This code was originally pure Javascript. I converted to Typescript my language of choice. I also simplified even more and converted it into an in -memory data source. This means when server goes up or down it starts over. That is why I have a test script file that runs a buch of tests and sets up a path for followup tests.
+        Also PostMan, ThunderClient, HopScotch could use some accessiblity improvements at this time.  For now my test.js file will have to suffice.
+    </p>
+    <h3>File Overviews</h3>
+<p>
+<b>src/index.ts & src/app.ts</b The index.ts (typescript file) loads the port number from the .env file that stores the enviromental variables for the server.> You should leave the port number to 3000 or you will break my test.js script file.  You notice that it loads the app.ts which is where the server actually starts working.  
+</p>
+<p>
+    The app.ts is loaded with middleware and routes that will proccess the requests as they come in. Typescript gets converted to javascript and run by NodeJs. Once concept you need to know here, is the routes and middlewares attached are all in memory as long as the Server is listening (in case Port 3000).  
+</p>
+<p>
+    The app.ts file loads and creates a decision/like tre or linked lists (even though js has no pointers). All the server does is proccess requests as they come in. Also immediately when the request a response object is created as well. These 2 objects are passed down the decision tree with app.use, app.get, and others. All stored in this tree/path. So you start from the top and go down. 
+</p>
+<p>
+    Just following the export app line,  you will encounter app.use( ... urlencoded)   and app.use( ... json). The urlencoded is not really needed, since I do not proccess any parameters on the url line. This middleware analyze the request url and parses the parameters & more into the request parameters  properties.  While the json middleware will modify the request body and put it in a json format, it is currently stringified json prior to this call. Json currently is set for a 50mbs limit, this means 50 megabytes of data. Now that is extremely large for this API server, a number of 2mbs would have probably worked fine.  Too large will take up resources in the server and limit how many requests you can hadle at the same time.  Keep in mind objects in json are passed reference, this means any modifications will be passed on.
+</p>
+<p>
+    Middleware and routes are proccessed in order until a response is sent back, usering return response.send or response.json. Then the request has been handled so not more traveling the decision tree/path. Just exit this proccess and listen for next request. Now to keep this inline the express passes a 3rd parameter the next Function. You can call this with no parameters and middleware will simply continue down the decision tree/path. In the mvc branch we will go in details about next()
+</p>
+<p>
+    The app.post("/register"  is the firts route..  You will noteice it has the "/register" as the route and  it handles post requests on that route.  The controller is written directly on the route, this is for your convenience and understanding.  Look below and you will see code that will grab data from the request body (email, password). Since we called the json parser earlier in the middle ware the request object has it neatly avaiable in the request object. We validate the email is not already registered and verify they passed a password. We return the appropiate response for invalid data or missing data. This is were you would normally validate the input /sanitize it.  If all is okay we encrypt password, save to database ,  &  generate a token and use our stored token in the .env file to generate the the token.
+</p>
+<p>
+    The token mainly 3 parts, payload, token signature/token key, expiration.key,  Payload in this case is user object returned when we created the user. You want to keep the payload small, but hold some common information that you well need quite often. This will reduce round trips to the database file. The token key comes from the .env file that containes the token you stored there during setup. The expiration is when you want the token generated to expire. For this lesson I set it in the .env to 30 seconds. This way I can test the expiration function in plenty of time. Most time you would set it to a short time of 15 minutes or 2 hours. Since clients use apps to interact with your API it is genrally okay and not that annoying to the client to have the app in the background re-login. If you want a truly more secure and more convenient you can create refresh tokens as well. See my resources where you can find out how. A more advanced implementaton.  
+</p>
+<p>
+    The next route is the post."/login" route and it works quite similar to the "/register" route. The next route is the first app.get("/"...)  route  that displays all the available routes in the auth branch. This route and all prior are unrestricted. The next route is restricted.
+</p>
+<p>
+    The app.get("/welcome", auth , ...) route is the beginning of the restricted route. You will notice this route is not like the others, it has a route "/welcome", auth, ...)  Aroute, middleware, controller code. The authenticatification middleware will short circuit if not a valid token passed. It simply returns a  response.sen with appropiate error codes.  I did not pay close attention to erro code numbers in the auth & role branches. The final branch I standardized my responses to be more in line.  The controller code that follows the auth middleware displays a welcome message and accesses the request body to get the user. This was filled from the token payload that the auth middleware parsed and placed on the request body.
+</p>
+<p>
+    The last acutal get route is "/userslist", auth, ...). I provide this route for 2 reasons. To verify users in the system, and a second route to demonstrate how express traverses the decision tree/path. Notice this one containes an auth as well.  Only the auth that folows the route gets executed and not both. You can verify this by simply removing the auth, on this route and you will have full access to this route. Since this is a get route you can use your brouser or curl. <code>curl http://localhost:3000:/userslist</code> While the server is running.
+</p>
+<p>
+    The last route is an app.use("*") the * is a wildcard and a catch all route. So give appropeate response.
+</p>
+<h3>Auth Middleware</h3>
+<p>
+    <b>src/middleware/auth.ts</b> is where we check the request object and validate the token. For this API example server I only use header to pass in the token and expect to be there, although you could pass in the token in a variety methods. My stes.js uses headers only and the "x-access-token" header. There are body, query, and other ways. It is your server so you make the rules. Next I take the token in the request and decrypt using the token key from my .env that I used to encryppt it. Once token is validated I attach the token with payload on the request body. anc call next().
+</p>
+<p>    <b>srce/model/users.ts</b> Here I just create users in memory using a simple object. The object arraay serves as a key on email with a value of user object. It is here to represent a table in a database. 
+</p>
+<p>
+    Now you can run and test it.  See the test section for that details for it. The test/test.js file will grow in each branch as I add more features. A good testing system  is absolutely needed in order to develop a robust API Server. Without it your clients will not like it and will not be back.
+</p>
+
+</details>
+</div>
 
 <!-- End of Card Sections -->
 </div>
@@ -127,7 +250,7 @@ You simply need to do <code>npm install</code>.  This command will install all y
 </div>
 
 
-<div id="talk-container" class="hidden"aria-hidden ="false" >
+<div id="talk-container" class="hidden"aria-hidden ="true" >
     <h5>Talking Console (ctrl+shift+D)</h5>
 
 <div id="talk-control" role="alert">

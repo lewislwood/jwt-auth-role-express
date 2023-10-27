@@ -24,7 +24,7 @@ this.hideClass = hideClassName
 this.clearButton.onclick = () => { this.talkCtrl.innerHTML = "";};
 
 this.clear("");
-this.enable(true, true);
+this.disable(true, true);
 
     }; //constructor
     enable( forAll = false, displayInfoMsg = true) {
@@ -232,22 +232,68 @@ this.setThemeButtonCaption();
 }; // ThemeManager
 
 
-let themeMgr, sayAlert, talkCon ;
+let themeMgr, sayAlert, talkCon , statusMessage;
+
+// Displays a status message for a specified time in milliseconds, replaces current default or appends.
+// Warning if to fast writing to status, prior clear timer will erase it too soon
+const displayStatus = (msg) => {
+ statusMessage.innerHTML = msg;
+setTimeout( () => { statusMessage.innerHTML = "";}, 5000)
+
+}; // displayStatus
+
+const setCopyCode = () => {
+    try {
+    const copyCode = (e, c) => {
+const code = c.innerHTML
+navigator.clipboard.writeText(code);
+displayStatus("Code copied to clipboard");
+e.preventDefault();
+  
+    };  // copyCode 
+    const makeCopyBtn = (code) => {
+        const btn = document.createElement("button")
+        btn.setAttribute("alt", "copy code to clpboard");
+        btn.innerHTML = "copy";
+        btn.setAttribute("class", "code-button")
+        btn.onclick = (e) => { copyCode ( e, code);};
+        return btn;
+    }; //  makeCopyBtn 
+const codes = document.querySelectorAll("code");
+codes.forEach((code) => { 
+    code.after(makeCopyBtn (code));}
+    );
+} catch(error) {
+sayAlert(`setCopyCode error: ${error.message}` );
+}; // catch
+}; // setCopyCode
+
+
+
 {
+    statusMessage = document.getElementById(`status-message`);
+
+
+    displayStatus("Loading...", 10000);
+
+
+
+    
     
     talkCon = new TalkingConsole();     
-    sayAlert =  (m) => {  talkCon .sayIt(m);};
-    sayAlert("I installed talking console and now am running theme manager.")
-    
+    sayAlert = (msg) => {   talkCon.sayIt(msg);};
+    talkCon.disable(true);
+
+    setCopyCode ();
+
+
+    sayAlert(" I am talking...");
+    if (!statusMessage) sayAlert("something went wrong");
+
+
+    sayAlert("Talking console loaded.");
     themeMgr = new ThemeManager( sayAlert); 
-    sayAlert( "Now enabling key handling");
     talkCon.enableKeyHandling();
-
-
-const props  = `Ready..`;
- 
-sayAlert(props);
-clearSayIt .onclick = () => { sayIt.innerHTML = "";};
-
+displayStatus("Loaded successfully..");
 
 }
