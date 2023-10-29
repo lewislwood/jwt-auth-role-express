@@ -179,6 +179,7 @@ You wil will want to have Vs Code installed , if you do not already have it. You
 
 <div name="Authentification Branch"  class="card-details">
 <h2>Authentification Branch (auth for short</h2>
+<code>git checkout Auth</code>
 
 <details>
     <summaary>
@@ -236,6 +237,168 @@ You wil will want to have Vs Code installed , if you do not already have it. You
 </p>
 
 </details>
+</div>
+
+<div name="Test.js Script System"  class="card-details">
+    <h2>Test Script System</h2>
+<details>
+    <summary>
+        Test Script and logging system. Performs many of the functions of API Testers like Postman, ThunderClient, and HoppScotch collections with scripting. This script grabs the returned token and holds it in memory. Places it on the requests (get or Post).  It run through a battery of tests you can comment out or add to. Click here for more details.
+    </summary>
+<p>
+    <b>Overview of test/Test.js</b> This test.js script file holds in memory tokens returned by the API Server and attaches the user/email to it. This way you can simply run once of the test functions and it will grab the token associated with the user/email. If no user/email is not given, then it will use the last token used. If an invalid user/email (not used before) then it assumes you want to run the test without a token. You will see me doing this by calling it with a user/email of "fake". A battery/collection of tests are placed in  functions to run a perticular set of tests. Tests are logged in test.log file for your    review. It appends to this file, so delete it or clear it out to have a fresh log.
+</p>
+<p>
+<b>Functions testLogin & testRegister</b> This 2 functions build post requests with email and password as parameters. It will log the eror if one is returned or token saved if one is returned.  The token is added to the buffer in an indexed object with user/email as key and value is the token. No token is sent on either of these post requests. 
+</p>
+<p>
+    <b>testRoute & testRoutePost</b> One is a get request on a route specified. The latter is of course a post request on a particular route, this function will be pressent on the Role Branch and mvc Branch. The testRoute that builds a get accepts a uner/email parameter. It performs a lookup for the user and uses the associated token if available or present.  Now the testRoutePost will add a parameter for values or data to be sent. Role and Blog in other branches will neefd this data. "/Blog" is a simple text string needed. The "/role" will need and array of roles you want to assign. Both blog and role will requre a sub path of user. For example "/role/lewis" will deal lewis's roles. Logs the result of the request. Keep in mind blog and role routes are not available in the auth branch, thus no tests present either. 
+</p>
+<h3>Collections/Sets Test Functions</h3>
+<p>
+    Groupins of test designed to test aspects of the API. They are functions in the test.js script file. Below is the list of them.
+</p>
+<ul>
+    <li>
+        <u><em>registerLoginTests</em></u> primary focus of these tests is for logins/registrations, tokens and saving and retrieving of tokens. Primarily tests the test.js script itself. It hits against "/welcome" route which returns a welcome message to the user. So if tokens were off a wrong welcome message would come back. 
+    </li>
+    <li>
+        <u><em>tokenAuthTests</em></u> this test test authenticated routes "/welcom" & "/userslist". You can easily rerun the tests after removeing the "auth," from the "/userslist" route. Then you will see the difference. This test is primarily for the auth branch and runs slightly differently under role & mvc branch, since I add roles, owner and guest capabilities. 
+    </li>
+    <li>
+        <u><em>tokenExpiresTest</em></u> You will need to ensure that you have set the expiration time of I say 30 seconds in the .env file.. It will register and then login (since register only returns a token if registering. Since I cannot be sure if you ran any other test set I just register & login to make sure.)  Also by get a new token expiration is 30 seconds that time. 
+    </li>
+    <li>
+        <u><em>testRoles</em></u> This test set I test the /role"/&lt;user></user&gt;""  and also the the "/blog/&lt;user&gt;" routes. I perform various get requests on these routes. User is not allow to modify their own roles that will be primarily in the next set of tests. Owner attribute has to be established for both routes for different reasons. Editors can edit anyone's blog's. Lunch lady can view anyone's role and change it.  Only present in role branch and mvc branch.
+    </li>
+    <li>
+<u><em>testSetRoles </em></u> This function test set is in role & mvc branch only.  This one I do detail stress testing of setting roles, test and see if role assigned allows the user to excercise that role's power or subtracting the role breaks their priviledges. Demonstrating, that a nrelogin is required to get the new priviledges or loose them. This wuld take a token server to invalidate a token instantly or add new priveledges. Topic for another time.
+    </li>
+</ul>
+<p>
+    The last function is "doTests()". Now this function has a simple list of group test one after another. simply comment out the tests you do not want to run or add your own and just return from it. Last line of the test/test.js file is doTests(); that is is the actual 1st line of the script that starts the test run. Keep in mind all tests are async, so you must proceed with  await keyword. Otherwise you will get irregular results.
+
+</p>
+<h3>Running the Test</h3>
+<p>
+    To run the tests simply type: <code>npm run test</code>.  Now the server must be running as well. You can run in debug if you want to edit it. Two launch scripts for VS Code have been provided, simply sect the launch script you desire. If you plan on editing, you will need to run <code>npm run watch</code> in another terminal. This will keep recompiling the typescript code into javascript in the background. You can manually recompile with the "tsc" command in the terminal as well. After an edit and save, simply restart the server to get the lates version with your modifications. 
+</p>
+<p>
+    If you do not plan on debugging simply type <code>npm run dev</code> this will launch the API server. Then you can simply run it against that server. <code>npm run test</code>.  You will need two terminal windows, but you do ot need vs code. You can simply launch another command prompt/linux session and do it there.
+</p>
+<p>
+    All results from thest will appear in the test.log file. Simply read through them and verify the est you want.
+</p>
+
+
+</details>
+
+
+
+</div>
+
+<div name="role branch"  class="card-details">
+<h2>Role Branch</h2>
+<code>git checkout role</code>
+<details>
+    <summary>
+Added Role Authorization & Guest role. Also concept owner role demonstrated. Also introduce sub routing using the router. Click here for details 
+    </summary>
+ <b>File changes from Auth Branch</b>
+ <p>
+    <u><em>src/app.ts</em></u> you will note at the top I import the verifyToken as auth as we did in the auth branch. Except this on comes from a custom version I created called src/middleware/role--auth.ts.   
+ Works like the previous, but creates a custom role of guest if unknown and places it on the request object. This where lw_request a extended version of request object.  Simply press f12 to go to the custom definition for lw_request I created. Also added 2 more middleware functions/imports hasRoles and validRoute. Each of them will user role and owner status to verify if they have access. The auth is not on a particular route, it is prior to routes where they will need access to role & user information and it is on a app.use( auth ) line.     The app.get("/welcome", hasRoles(["registered"])) Now middleware tests if the user has the specified role in order to run the controller code which is the welcom message.
+</p>
+<p>
+    Next route is app.get("/userslist", hasRoles(["guest"]), ....) now I am testing that they are note registered basically or an admin. This one is crazy, but it illustrates this functionallity perfectly.  
+</p>
+<p>
+    I created 2 routes blog and role and I implement them here in src/app.ts.  Normally you place the routes in a seperate file. I do it so you can see it up close and personal, without jumping around at this time.
+</p>
+<p>
+    The app.use("/blog", blogRoute...) loads the glogRoute at the routing of "/blog".  
+    BlogRoute.use( calls validUser, hasRoles...) The validUser checks the request and identifies if the current user is the owner or not. So now we know who the owner is on the request object. HasRoles grants access only to registered and editors.
+    The next line I immediately do a blogRoute.use("/*", ) routes start from where they are attached to. This one is /blog route on the app.use. This way you can use same route code in other routes tree locations.
+</p>
+<p>
+    You will notice I daisy chane a .get off the prior route("/*"..). I gostraight to the controller code since the filtering and authorization has already been done in prior lines. 
+</p>
+<p>
+    I then do a .post(hasRoles([]"editor"], true")). This route added the the Owner flag has access to this route + method (post). So you can edit only your own or you are the editor. Admins always have rights. )
+</p>
+<p>
+    The roleRoute I do pretty much the same thing. Only difference is that I deny the owner the access to the post route, thus they cannot modify their own roles. Also role must be "Lunch lady" to change roles.
+</p>
+<h3>src/midleware Files listing</h3>
+<ul>
+    <li>
+        <u><em>auth.ts</em></u> This is the original auth.ts. It is here for your convenience of comparing the changes.
+    </li>
+    <li>
+        <u><em>authorize.ts</em></u>  Simply checks the request object for the property isAuthorized and returns eror response if not or goes on to next if authorized. Simplies test
+    </li>
+    <li>
+        <u><em>role-auth.ts</em></u> There are some minor differences from the original. I only check the header for the token. Also if they do not include a token I login them as guest. If the token is invalid I deny them access.
+    </li>
+    <li>
+        <u><em>roles.ts</em></u> This file holds the middleware for the hasRoles function. The coding here takes advantage of how javascript thinks of functions. Functions are passed as values u they have a () after them to invoke them. So what this one does is it is a function with parameters, thus making them available to the code within and returned. Notice this function returns an anonymous function. So when this function is placed on a user or route you put (parameters...). So the app.use or .get, ...etc only see the returned function which is anonymous. The anonymous function uses the parameters passed into the hasRoles function and decides if access is granted by going to next or blocks them and returns an error message. 
+    </li>
+    <li></li>
+    <li>
+        <u><em>validUserRoute</em></u> This simply validates that the route has a valid user as part of the route. Afer user fake does not exist as a user so ther is no /blog/fake route.
+    </li>
+</ul>
+<p>
+    You will also note some error ignoring where some crazy error kept coming up, but was no affect on the results. Figure I would track it down in the mvc when I add error handling, logging and arrange in a more easily to digest manner. I am blind and find smaller code files and more focused functions to be easier to track and comprehend. For my visually impaired you will also appreciate the difference.
+</p>
+
+</details>
+
+</div>
+
+<div name="mvc-branch"  class="card-details">
+<h2>MVC Branch (Model View Controller)</h2>
+<code>git checkout mvc</code>
+<details>
+    <summary>
+        <p>
+        The model, view, and controller refers to the ordering of your code. This being an API Only code code the view is only the the response data/strings returned and only front end is the route itself. This branch I arrange the components, seperate them to their components. Add error handling, request logging, error logging, and performance tracking capabilities ready to implement. Click here for details.  
+    </p>
+    </summary>
+<p>
+    A whole lot has happened going from the role branch to this mvc branch. You will note a branch new src/API folder , which is used to store API routes. A large API with multi versions of the API May add versions then the actual routes. Example: src/API/v1.0 and src/API/v2.1, ... etc.  There the routes will be with their specific code and midddleware calls. Now this one has no versions, but you will notice that there is an auth sub-folder.  This holds the authentic validations that you may implement. This can O-Auth (Facebook, GitHub, Google, etc), externa token issuer, Appi calls to your own Token Server. Many developers out their seem to be settling on the auth folder as a sub folder on the API or routes folder. 
+</p>
+<p>
+The src/controllers is a folder where you place all controllers. The prior branches had the code for the controllers attached to the route for your convenience, this is not what you desire. Smaller code, speciallized, and seprated make easier to maintain and manage code. This code acts as a communication layer between data server/api server, and presentation. For example for an API: controller may call for data from the data server and then pass it on to data manipulator to present this data in a speciallized manner or format (view). Then the controller would return the value. Controller should not do any data manipulation, the login and register clearly violate this rule, most likely should be a tonken.ts component under the auth sub-folder and there some other handling could be implemented as well (buffering). Larger applications may even do versioning similar as I mentioned in API as well. This aids in transitioning to the next version and the ability to rollback quickly if something is off. 
+</p>
+<p>
+    <u><em>Logging</em></u> The ability for the API server to log all kinds of data/requests has been created. I created src/config/logger.ts, since I would most likely store logging information in a database when present. Although this logger only outputs the logs to the file system. You can do both and customizing it as well. I use a screen reader and this is only demo/test server I moved timestamp to the end of the log entry and shortened it. Refer to the logger.ts and simply uncomment the line above my timestamp and comment out mine. Most admins/developers use log analyzers such as Data Dog. This is Winston logging package from npm ( a very popular logger).  This logger curently has 2 transports and log types defined.  Notice in production mode only warn and server errors are logged, the logger ignores others.  See the .env file for that setting.
+</p>
+<p>
+    <u><em>Morgan</em></u> is located in the src/middleware/morgan.ts is a request logger system. You can use this to track different types of requests. Want to see what requests get the highest amount of traffic? How many invalid request are bogging down your application? If your application gets DNOS (denial of servervice) attacks it will shut down your service or block all others. Morgan can help you track down these items and more. Perhaps help you create better error handling rules to block or streamline these requests. For example: This API only handles "GET" and "POST" request types. Good code wuld place a middleware filter at the top, for all invalid requests to either log & respond, respond, or ignore. By tracking some problems you can track bad IP actors out their and block them completely. It is your server and your rules.   I only implemented their basic morgan logging template. You will have to refer to Morgan for more options. See resources.
+</p>
+<p>
+    <u><em>Error Handling</em></u> Error handling is quite versatile and simple to emplement. Special error logging meddlewareand error responders that send the response object to the client. I do a simple somewhat error handling using custom error extended classes (AppError, RoleError, TestError, ...etc..). The logging I only log it to the appropiate logger and not much specific to the route. Fore esample: RoleError could have had its own errorlog middleware and output information particular to tha route and indicate on the inherited class AppError that it was already logged.  Then the Standard  errorLogger would ingnore it.  
+</p>
+<p>
+    Express has a a pretty neat way of handling errors. You simply pass the error object  in the next(error);. Express will pass this error log down the decision tree until it finds the next middleware that accepts error object as the first parameter then request, respoinse, nextFunction.   The code for the error handlers middelware I use are in src/middleware/error-handlers.ts.
+ You will find them as middleware functions in src/app.ts in app.use( ..).
+</p>
+<p>
+    <u><em>.env</em></u> file contains following logging enviromentals that were added to do with logging. "log_exc_error_names" is a list of names to exclude, ie RoleError, BlogError // would exclude user feedback errors from blog and Role that throw a RoleError or BlogError. This is nice when you want to focus on a particular group of errors that users are getting. "log_inc_error_codes"   this one is the exact opposit of names, it will override and log all ie 403, bad request. This way you can track how often or what is going wrong. "log_all_request=false" this will tell me to call morgan and log the requests. This way you can track what request is causing the actions, or maybe you want to track what is getting more traffic.
+</p>
+<p>
+    <u><em>app.ts, blog.ts, role.ts</em></u>  src/app.ts loads the src/api/blog/blog.ts & src/api/role/role.ts for route handling along api routes. You will notice that code got smaller and more organized.
+</p>
+<p>
+    <u><em>myTest</em></u> is a controller that I use to test errors or other things that I want to run a quick test. You will see some commented out code that generates or creates errors, I even  tell Typescript to ignore the errors //@ts-ignore. This way I could create 500+ errors which are server type errors and custom error handling for my log testing. This is a good place practice to place code that you want to test. If you leave it in your code you should put a production code detection, because you may not want someone to access this code if you for example (pre grant access and setup ready to do something).
+    This file is src/controllers/mytest.ts and is callied in src/api/app.ts.
+</p>
+<p>
+    That is all there is.Modify the code and run the tests.  Be sure to read the resources. There is more about securing your API and many other considerations.
+</p>
+</details>
+
 </div>
 
 <!-- End of Card Sections -->
