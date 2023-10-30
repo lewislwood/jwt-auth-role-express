@@ -1,15 +1,20 @@
 
 :root {
     --dark-bg: #000080;
+    --dark-CANVAS: #00009A;
     --dark-color: yellow;
 
     --light-bg: lightgray;
+    --LIGHT-CANVAS: GREY;
     --light-color:#000080;
 
     --theme-bg: var(--light-bg);
+    --THEME-CANVAS: VAR(--LIGHT-CANVAS);
     --theme-color: var(--light-color);
     @media (prefers-color-scheme: dark) {
     --theme-bg: var(--dark-bg);
+    --theme-CANVAS: var(--dark-CANVAS);
+
     --theme-color: var(--dark-color);
     }
 }
@@ -34,9 +39,10 @@
     
 }
 .container {
-    width: 1000px;
+    width: 1900px;
     padding: 0;;
     margin: 0;
+    box-flex-group: VAR(--THEME-CANVAS);;
 }
 
 header, footer {
@@ -75,4 +81,32 @@ font-weight:l
     padding: 3px;
     margin: 3px;;
     font-style: 0.8rem;
+}
+.main {
+    width: 100%;
+    padding-top: 8px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 8px;
+    margin: 5px;;
+    background: none;
+    display: grid;
+    place-items: center;
+}
+
+.top-section {
+    display: block;
+width: 800px;
+background: var( --theme-bg);
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns:minMax( 450px, 800px)   minMax( 450px, 800px)   minMax( 450px, 800px)  ;
+    column-gap: 10px;
+}
+.card-details {
+    margin: 6PX;
+    padding: 3PX;
+    box-flex-group: VAR(--THEM-BG);;
 }

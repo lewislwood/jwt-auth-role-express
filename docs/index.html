@@ -401,6 +401,53 @@ The src/controllers is a folder where you place all controllers. The prior branc
 
 </div>
 
+<div name="resources"  class="card-details">
+<h4>Resources</h4>
+<div name="general-resources" >
+    <p>
+        <b>General Resources</b> The following technologies used in this API. Also a couple of UouTuber's that I used as a reference to create this tutorial. I thought you may find some of their stuff beneficial as I do.
+    </p>
+<ul>
+    <li>
+        <a href="https://expressjs.com/en/advanced/best-practice-performance.html">Express reference  best practices</a> whom better to get information from than the Express documentation  itself.
+    </li>
+    <li>
+<a href="https://github.com/winstonjs/winston">Winston Logger Documentation</a> find out how to send your logs to http end points, database, and more.
+    </li>
+    <li>
+<a href="https://github.com/expressjs/morgan">Morgan documentation</a> showing you how to log your requests and filter the types of requests to log and format. I log to logger, but there other ways to log as well.
+    </li>
+    <li>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">HTTP Standard Error Codes</a> to use in your API. It is not mandatory, but many oout there are used to these codes being returned.
+    </li>
+    <li>
+        <a href="https://www.youtube.com/playlist?list=PL0Zuz27SZ-6P4vnjQ_PJ5iRYsqJkQhtUu">Dave Grey's Express playlist</a> one of many I used in my learning for this  project. He discusseshow to use refresh tokens as part of your authentification. Really good practice in front end apps especially.  Can be in an API makes it arder for packet network sniffers to steal your token and do harm. The idea is short time token, like 15 minutes and refresh token of a longer time.  Thus your clientside or their app could just resend the refresh token instead of asking client to relogin. Example 1 day. 
+    </li>
+    <li>
+        <a href="https://www.youtube.com/playlist?list=PLZlA0Gpn_vH8jbFkBjOuFjhxANC63OmXM">WebDev Simplified</a>I think this javascript for the auth branch originally came from this guy. I simplified more and converted it to Typescript. He really boils things down and provides code. 
+    </li>
+</ul>
+</div>
+
+<div name="security-resources">
+    <p>
+<b>Security Related Resources</b> are the key to having a safe and secure web site. Your clients will be happier.  A less secure site will bring your site down a lot, and their customers may fall prey to cross side scripting. So here are some sources to read.
+</p>
+<ul>
+    <li>
+        <a href="https://javascript.plainenglish.io/5-best-practices-to-secure-your-node-js-application-in-production-4b9ee8f0fcac">5 Best practices to secure you Nodejs</a> A great read and chalk full of great practices and why yoiu need them.
+    </li>
+    <li>
+        <a href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">Security Cheat Sheet</a> This has a long list of security issues/references. 
+    </li>
+    <li>
+        <a href="https://www.npmjs.com/package/cors"CORS></a> This article explains what CORS is and why ou may want to configure your own CORS rules as well as standard ones.
+    </li>
+    <li></li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" Another by Mozilla Cross Side Origin Resource Sharing></a> Has numerous examples of how hackers can take advantage and how to  avoid hackers.
+</ul>
+</div>
+
+</div>
 <!-- End of Card Sections -->
 </div>
 

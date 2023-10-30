@@ -155,7 +155,8 @@ class ThemeManager {
     docRoot;
     current = "light";
     themes = {};
-    names = ["light", "dark"];
+    names = ["light", "dark"]; // Name of themes defied in css.
+    SUFFIXES = ["CANVAS"]; // SUFFIXES BESIDES BG & COLOR
     index = 0;
     constructor(log = console.log , toggleCtrlOrID = `theme-toggler` ){
  this.logIt = log;
@@ -191,7 +192,13 @@ this.toggleCtrl.onclick = () => { this.nextTheme();};
         const bg = getColor(n, "bg");
         if (bg === curBG) this.current= n;
         const color = getColor(n, "color");
-        this.themes[n] = new themeColors(n, bg, color);
+        const nTC =  new themeColors(n, bg, color);;
+        this.themes[n] = nTC ;
+        // add the additional suffixes colors
+        this.SUFFIXES .forEach((s) => {
+            nTC[s] = getColor(n, s);
+            
+        })
     
     }); // forEach
     this.index = this.names.findIndex( (t) => {return (t ===  this.current);});
