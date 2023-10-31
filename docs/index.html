@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<button id="go2main" class="hidden">Go to Main</button>
 <button id="theme-toggler">Dark Theme</button>
 <div id="status-message" role="alert" >...</div>
 <div class="outer-container">
@@ -23,12 +24,12 @@
     </header>
 <div class="main" role="main">
     <div class="top-section">
-<h1 id="main-heading">API Authentification & Authorization 3 part Tutorial</h1>
+<h1 id="main-heading" tabindex="0" >API Authentification & Authorization 3 part Tutorial</h1>
 <p>This tutorial is a 3 branch/step tutorial in developing a robust API. A firm understanding of an Express API will be demonstrated and become quite evident in this 3 p  part development proccess. How webtokens work and how security is implemented will be understood when you complete this proccess.  How to handle authorization/roles for users as part of authentificaton. Error handling how to set a robust and quite customizable error handling to help you find and diagnose the difficulat to locate errors. How to implement a sound logging system, for what ever you want to monitor (requests, types of user request errors, and server errors). Also a robust testing javascript file I developed to hit my server with requests (get & post). 
 </p>
 </div>
-<div class="cards-container">
-<div name="API Details Section" class="card-details">
+<div id="cards-container"  class="cards-container">
+<div id="API Details Section" class="card-details">
 <h2>API Server Overview & Details</h2>
 <details id="api-details">
 

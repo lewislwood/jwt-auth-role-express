@@ -1,19 +1,20 @@
 
 :root {
     --dark-bg: #000080;
-    --dark-CANVAS: #00009A;
+    --dark-CANVAS:#A9A9A9 ;
     --dark-color: yellow;
 
     --light-bg: lightgray;
-    --LIGHT-CANVAS: GREY;
+    --light-CANVAS:yellow;
+
     --light-color:#000080;
 
     --theme-bg: var(--light-bg);
-    --THEME-CANVAS: VAR(--LIGHT-CANVAS);
+    --theme-canvas: VAR(--LIGHT-CANVAS, yellow);
     --theme-color: var(--light-color);
     @media (prefers-color-scheme: dark) {
     --theme-bg: var(--dark-bg);
-    --theme-CANVAS: var(--dark-CANVAS);
+    --theme-canvas: var(--dark-CANVAS);
 
     --theme-color: var(--dark-color);
     }
@@ -42,7 +43,7 @@
     width: 1900px;
     padding: 0;;
     margin: 0;
-    box-flex-group: VAR(--THEME-CANVAS);;
+    background: var(--theme-canvas, cyan);
 }
 
 header, footer {
@@ -89,7 +90,7 @@ font-weight:l
     padding-right: 0;
     padding-bottom: 8px;
     margin: 5px;;
-    background: none;
+    background: var(--theme-canvas, yellow);
     display: grid;
     place-items: center;
 }
@@ -100,13 +101,13 @@ width: 800px;
 background: var( --theme-bg);
 }
 
-.cards-container {
+.cards-container, #cards-container {
     display: grid;
     grid-template-columns:minMax( 450px, 800px)   minMax( 450px, 800px)   minMax( 450px, 800px)  ;
     column-gap: 10px;
 }
-.card-details {
+.card-details{
     margin: 6PX;
     padding: 3PX;
-    box-flex-group: VAR(--THEM-BG);;
+    background: var(--theme-bg);;
 }

@@ -152,14 +152,17 @@ class ThemeManager {
 
     toggleCtrl;
     logIt;
+    sayIt;
     docRoot;
     current = "light";
     themes = {};
     names = ["light", "dark"]; // Name of themes defied in css.
     SUFFIXES = ["CANVAS"]; // SUFFIXES BESIDES BG & COLOR
     index = 0;
-    constructor(log = console.log , toggleCtrlOrID = `theme-toggler` ){
+    constructor(log = console.log , sayStatus, toggleCtrlOrID = `theme-toggler`  ){
  this.logIt = log;
+ if ( sayStatus)  this.sayIt = sayStatus
+ else this.sayIt = this.logIt;
 
 
 if (typeof toggleCtrlOrID === "string") this.toggleCtrl = document.getElementById(toggleCtrlOrID)
@@ -196,7 +199,9 @@ this.toggleCtrl.onclick = () => { this.nextTheme();};
         this.themes[n] = nTC ;
         // add the additional suffixes colors
         this.SUFFIXES .forEach((s) => {
+            // this.logIt(`tc: ${n} ${s}`);
             nTC[s] = getColor(n, s);
+            // this.logIt(`tc: ${n} ${s}  is ${nTC[s]}`);
             
         })
     
@@ -217,7 +222,7 @@ return i;
 nextTheme() {
 const i = this.nextIndex(), r = this.docRoot;
 const name = this.names[i];
-this.logIt(`Switching to ${name}`);
+this.sayIt(`Switching to ${name}`);
 const theme = this.themes[name];
 const setColor = (suffix, color) => {
     const tColor  = `--theme-${suffix}`;
@@ -225,6 +230,10 @@ const setColor = (suffix, color) => {
 }; // setColor
 setColor("bg", theme.bg);
 setColor("color", theme.color);
+this.SUFFIXES.forEach((s) => {
+    // this.logIt(` setting ${s} to ${theme[s]}`);
+    setColor(s, theme[s]);
+});
 this.index = i; this.current = name;
 this.setThemeButtonCaption();
 
@@ -294,13 +303,16 @@ sayAlert(`setCopyCode error: ${error.message}` );
     setCopyCode ();
 
 
-    sayAlert(" I am talking...");
     if (!statusMessage) sayAlert("something went wrong");
 
 
     sayAlert("Talking console loaded.");
-    themeMgr = new ThemeManager( sayAlert); 
+    themeMgr = new ThemeManager( sayAlert, displayStatus); 
     talkCon.enableKeyHandling();
+    const b = document.getElementById("go2main"), h = document.getElementById(`main-heading`);
+    
+    b.onclick = () => { h.focus();};
+
 displayStatus("Loaded successfully..");
 
 }
