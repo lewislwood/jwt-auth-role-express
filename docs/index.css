@@ -40,7 +40,6 @@
     
 }
 .container {
-    width: 1900px;
     padding: 0;;
     margin: 0;
     background: var(--theme-canvas, cyan);
@@ -104,6 +103,15 @@ background: var( --theme-bg);
 color: var(--theme-color);
 }
 
+
+.card-details{
+    background: var(--theme-bg);;
+}
+
+@media (min-width: 1600px){
+.container {
+    width: 1900px;
+}    
 .cards-container, #cards-container {
     display: grid;
     grid-template-columns:minMax( 450px, 800px)   minMax( 450px, 800px)   minMax( 450px, 800px)  ;
@@ -111,6 +119,40 @@ color: var(--theme-color);
 }
 .card-details{
     margin: 6PX;
-    padding: 3PX;
-    background: var(--theme-bg);;
+    padding: 4PX;
 }
+}
+@media (max-width: 1599px) and (min-width: 900px){
+    .container {
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;;
+    }    
+    .cards-container, #cards-container {
+        display: grid;
+        grid-template-columns:minMax( 450px, 700px)   minMax( 450px, 750)px;   
+        column-gap: 10px;
+    }
+    .card-details{
+        margin: 6PX;
+        padding: 4PX;
+    }
+      
+}
+@media (max-width: 899px) {
+    .container {
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;;
+    }    
+    .cards-container, #cards-container {
+        display: grid;
+        place-content: center;
+    }
+    .card-details{
+        margin: 8PX;
+        padding: 4PX;
+    }
+}
+
+
