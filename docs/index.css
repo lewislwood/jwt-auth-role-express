@@ -52,6 +52,8 @@ header, footer {
     padding: 5ps;
     display: grid;
     place-content: center;
+    background: var(--theme-bg);
+    color: var(--theme-color);;
 }
 .banner {
     font-weight: 700;
@@ -99,6 +101,7 @@ font-weight:l
     display: block;
 width: 800px;
 background: var( --theme-bg);
+color: var(--theme-color);
 }
 
 .cards-container, #cards-container {
