@@ -183,11 +183,12 @@ You wil will want to have Vs Code installed , if you do not already have it. You
 <code>git checkout Auth</code>
 
 <details>
-    <summaary>
-        <p>
+    <summary>
+<p>
             <b>Auth Branch</b> Is the first branch in this lesson. Here you will learn how express middleware handles authentification. How tokens are generated and assigned. Click here for more details and begin.
         </p>
-    </summaary>
+    </summary>
+
     <u><em>You will need Vs Code for best experience with this tutorial.</em></u>
     <p>
         This code was originally pure Javascript. I converted to Typescript my language of choice. I also simplified even more and converted it into an in -memory data source. This means when server goes up or down it starts over. That is why I have a test script file that runs a buch of tests and sets up a path for followup tests.
@@ -370,7 +371,7 @@ Added Role Authorization & Guest role. Also concept owner role demonstrated. Als
     A whole lot has happened going from the role branch to this mvc branch. You will note a branch new src/API folder , which is used to store API routes. A large API with multi versions of the API May add versions then the actual routes. Example: src/API/v1.0 and src/API/v2.1, ... etc.  There the routes will be with their specific code and midddleware calls. Now this one has no versions, but you will notice that there is an auth sub-folder.  This holds the authentic validations that you may implement. This can O-Auth (Facebook, GitHub, Google, etc), externa token issuer, Appi calls to your own Token Server. Many developers out their seem to be settling on the auth folder as a sub folder on the API or routes folder. 
 </p>
 <p>
-The src/controllers is a folder where you place all controllers. The prior branches had the code for the controllers attached to the route for your convenience, this is not what you desire. Smaller code, speciallized, and seprated make easier to maintain and manage code. This code acts as a communication layer between data server/api server, and presentation. For example for an API: controller may call for data from the data server and then pass it on to data manipulator to present this data in a speciallized manner or format (view). Then the controller would return the value. Controller should not do any data manipulation, the login and register clearly violate this rule, most likely should be a tonken.ts component under the auth sub-folder and there some other handling could be implemented as well (buffering). Larger applications may even do versioning similar as I mentioned in API as well. This aids in transitioning to the next version and the ability to rollback quickly if something is off. 
+The src/controllers is a folder where you place all controllers. The prior branches had the code for the controllers attached to the route for your convenience, this is not what you desire. Smaller code, specialized, and seprated make easier to maintain and manage code. This code acts as a communication layer between data server/api server, and presentation. For example for an API: controller may call for data from the data server and then pass it on to data manipulator to present this data in a speciallized manner or format (view). Then the controller would return the value. Controller should not do any data manipulation, the login and register clearly violate this rule, most likely should be a tonken.ts component under the auth sub-folder and there some other handling could be implemented as well (buffering). Larger applications may even do versioning similar as I mentioned in API as well. This aids in transitioning to the next version and the ability to rollback quickly if something is off. 
 </p>
 <p>
     <u><em>Logging</em></u> The ability for the API server to log all kinds of data/requests has been created. I created src/config/logger.ts, since I would most likely store logging information in a database when present. Although this logger only outputs the logs to the file system. You can do both and customizing it as well. I use a screen reader and this is only demo/test server I moved timestamp to the end of the log entry and shortened it. Refer to the logger.ts and simply uncomment the line above my timestamp and comment out mine. Most admins/developers use log analyzers such as Data Dog. This is Winston logging package from npm ( a very popular logger).  This logger curently has 2 transports and log types defined.  Notice in production mode only warn and server errors are logged, the logger ignores others.  See the .env file for that setting.
